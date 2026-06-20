@@ -5,21 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>🏡 Skagene Stugboken</title>
     <style>
-        /* ========== GRUNDLÄGGANDE STIL ========== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f0f4f0;
             color: #1e2b1e;
             padding-bottom: 80px;
             min-height: 100vh;
         }
-
         .app-container {
             max-width: 480px;
             margin: 0 auto;
@@ -27,7 +20,6 @@
             min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.08);
         }
-
         .app-header {
             background: #2d5a2d;
             color: white;
@@ -36,19 +28,8 @@
             top: 0;
             z-index: 10;
         }
-
-        .app-header h1 {
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .app-header p {
-            font-size: 14px;
-            opacity: 0.85;
-            margin-top: 2px;
-        }
-
+        .app-header h1 { font-size: 22px; font-weight: 600; }
+        .app-header p { font-size: 14px; opacity: 0.85; margin-top: 2px; }
         .tab-bar {
             display: flex;
             background: #e8efe8;
@@ -58,7 +39,6 @@
             z-index: 9;
             background: #f0f4f0;
         }
-
         .tab-btn {
             flex: 1;
             padding: 12px 4px;
@@ -68,34 +48,17 @@
             font-weight: 600;
             color: #3d5a3d;
             cursor: pointer;
-            transition: all 0.2s;
             border-bottom: 3px solid transparent;
             text-align: center;
         }
-
         .tab-btn.active {
             color: #1e3d1e;
             border-bottom-color: #2d5a2d;
             background: white;
         }
-
-        .tab-btn i {
-            display: block;
-            font-size: 20px;
-            font-style: normal;
-            margin-bottom: 2px;
-        }
-
-        .page {
-            display: none;
-            padding: 16px 16px 30px 16px;
-            background: white;
-        }
-
-        .page.active {
-            display: block;
-        }
-
+        .tab-btn i { display: block; font-size: 20px; font-style: normal; margin-bottom: 2px; }
+        .page { display: none; padding: 16px 16px 30px 16px; background: white; }
+        .page.active { display: block; }
         .card {
             background: #f8faf8;
             border-radius: 12px;
@@ -103,24 +66,9 @@
             margin-bottom: 14px;
             border: 1px solid #e2ece2;
         }
-
-        .card h3 {
-            font-size: 17px;
-            margin-bottom: 6px;
-            color: #1e3d1e;
-        }
-
-        .card p, .card li {
-            font-size: 15px;
-            line-height: 1.5;
-            color: #2d3d2d;
-        }
-
-        .card ul {
-            padding-left: 20px;
-            margin-top: 6px;
-        }
-
+        .card h3 { font-size: 17px; margin-bottom: 6px; color: #1e3d1e; }
+        .card p, .card li { font-size: 15px; line-height: 1.5; color: #2d3d2d; }
+        .card ul { padding-left: 20px; margin-top: 6px; }
         .booking-item {
             background: white;
             border-radius: 10px;
@@ -129,23 +77,9 @@
             border-left: 5px solid #2d5a2d;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
-
-        .booking-item .dates {
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .booking-item .meta {
-            font-size: 14px;
-            color: #4d6a4d;
-            margin-top: 4px;
-        }
-
-        .booking-item .booked-by {
-            font-weight: 600;
-            color: #1e3d1e;
-        }
-
+        .booking-item .dates { font-weight: 700; font-size: 16px; }
+        .booking-item .meta { font-size: 14px; color: #4d6a4d; margin-top: 4px; }
+        .booking-item .booked-by { font-weight: 600; color: #1e3d1e; }
         .btn-book {
             background: #2d5a2d;
             color: white;
@@ -156,19 +90,10 @@
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
             margin-top: 4px;
         }
-
-        .btn-book:active {
-            background: #1a3d1a;
-        }
-
-        .btn-book:disabled {
-            background: #a0b8a0;
-            cursor: not-allowed;
-        }
-
+        .btn-book:active { background: #1a3d1a; }
+        .btn-book:disabled { background: #a0b8a0; cursor: not-allowed; }
         .btn-danger {
             background: #b33c3c;
             color: white;
@@ -179,15 +104,8 @@
             cursor: pointer;
             margin-top: 6px;
         }
-
-        .btn-danger:active {
-            background: #8a2e2e;
-        }
-
-        .input-group {
-            margin-bottom: 12px;
-        }
-
+        .btn-danger:active { background: #8a2e2e; }
+        .input-group { margin-bottom: 12px; }
         .input-group label {
             display: block;
             font-weight: 600;
@@ -195,7 +113,6 @@
             margin-bottom: 4px;
             color: #2d4a2d;
         }
-
         .input-group input, .input-group select {
             width: 100%;
             padding: 10px 12px;
@@ -204,12 +121,10 @@
             font-size: 16px;
             background: white;
         }
-
         .input-group input:focus, .input-group select:focus {
             outline: 2px solid #2d5a2d;
             border-color: transparent;
         }
-
         .checklist-item {
             display: flex;
             align-items: flex-start;
@@ -217,11 +132,7 @@
             padding: 10px 0;
             border-bottom: 1px solid #e8f0e8;
         }
-
-        .checklist-item:last-child {
-            border-bottom: none;
-        }
-
+        .checklist-item:last-child { border-bottom: none; }
         .checklist-item input[type="checkbox"] {
             width: 22px;
             height: 22px;
@@ -230,18 +141,8 @@
             flex-shrink: 0;
             cursor: pointer;
         }
-
-        .checklist-item label {
-            font-size: 15px;
-            line-height: 1.4;
-            cursor: pointer;
-        }
-
-        .checklist-item.done label {
-            text-decoration: line-through;
-            color: #6d8a6d;
-        }
-
+        .checklist-item label { font-size: 15px; line-height: 1.4; cursor: pointer; }
+        .checklist-item.done label { text-decoration: line-through; color: #6d8a6d; }
         .checklist-progress {
             background: #e8efe8;
             border-radius: 20px;
@@ -249,7 +150,6 @@
             margin: 12px 0 6px 0;
             overflow: hidden;
         }
-
         .checklist-progress-fill {
             height: 100%;
             background: #2d5a2d;
@@ -257,17 +157,8 @@
             border-radius: 20px;
             transition: width 0.3s;
         }
-
-        .checklist-stats {
-            font-size: 14px;
-            color: #4d6a4d;
-            text-align: right;
-        }
-
-        .instruction-section {
-            margin-bottom: 18px;
-        }
-
+        .checklist-stats { font-size: 14px; color: #4d6a4d; text-align: right; }
+        .instruction-section { margin-bottom: 18px; }
         .instruction-section h4 {
             font-size: 16px;
             color: #1e3d1e;
@@ -276,7 +167,6 @@
             gap: 8px;
             margin-bottom: 4px;
         }
-
         .instruction-section .step {
             background: white;
             padding: 8px 12px;
@@ -285,11 +175,7 @@
             border: 1px solid #e2ece2;
             font-size: 14px;
         }
-
-        .instruction-section .step strong {
-            color: #2d5a2d;
-        }
-
+        .instruction-section .step strong { color: #2d5a2d; }
         .modal-overlay {
             display: none;
             position: fixed;
@@ -302,11 +188,7 @@
             justify-content: center;
             align-items: center;
         }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
+        .modal-overlay.show { display: flex; }
         .modal-box {
             background: white;
             border-radius: 20px;
@@ -315,19 +197,12 @@
             width: 90%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-
-        .modal-box h2 {
-            font-size: 20px;
-            margin-bottom: 16px;
-            color: #1e3d1e;
-        }
-
+        .modal-box h2 { font-size: 20px; margin-bottom: 16px; color: #1e3d1e; }
         .modal-box .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 16px;
         }
-
         .modal-box .btn-group button {
             flex: 1;
             padding: 12px;
@@ -337,35 +212,17 @@
             font-size: 16px;
             cursor: pointer;
         }
-
         .modal-box .btn-group .btn-cancel {
             background: #e8ece8;
             color: #3d5a3d;
         }
-
         .modal-box .btn-group .btn-confirm {
             background: #2d5a2d;
             color: white;
         }
-
-        .empty-state {
-            text-align: center;
-            padding: 30px 10px;
-            color: #6d8a6d;
-        }
-
-        .empty-state span {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .small-note {
-            font-size: 13px;
-            color: #6d8a6d;
-            margin-top: 4px;
-        }
-
+        .empty-state { text-align: center; padding: 30px 10px; color: #6d8a6d; }
+        .empty-state span { font-size: 40px; display: block; margin-bottom: 8px; }
+        .small-note { font-size: 13px; color: #6d8a6d; margin-top: 4px; }
         .highlight-box {
             background: #fcf8e8;
             border-left: 4px solid #d4a843;
@@ -373,24 +230,14 @@
             border-radius: 8px;
             margin-bottom: 12px;
         }
-
         .loading-spinner {
             text-align: center;
             padding: 40px 0;
             color: #4d6a4d;
         }
-
         @media (min-width: 600px) {
-            .app-container {
-                border-radius: 16px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-                min-height: auto;
-            }
-            body {
-                background: #d8e4d8;
-                padding-bottom: 20px;
-            }
+            .app-container { border-radius: 16px; margin-top: 20px; margin-bottom: 20px; min-height: auto; }
+            body { background: #d8e4d8; padding-bottom: 20px; }
         }
     </style>
 </head>
@@ -429,21 +276,18 @@
 
     <div id="page-instructions" class="page">
         <h3 style="margin-bottom: 12px;">📖 Praktiska instruktioner</h3>
-
         <div class="instruction-section">
             <h4>💧 Vatten & Ström</h4>
             <div class="step"><strong>1.</strong> Huvudkran för vatten sitter under diskbänken, vrid <strong>medurs</strong> för att öppna.</div>
             <div class="step"><strong>2.</strong> Elcentralen sitter i hallen. Huvudbrytare = längst till vänster.</div>
             <div class="step"><strong>3.</strong> Värmepumpen: sätt på fläktläge 2 för värme.</div>
         </div>
-
         <div class="instruction-section">
             <h4>❄️ Kyl & Frys</h4>
             <div class="step"><strong>1.</strong> Kylskåpet: ställ in på 4°C (mittenläget).</div>
             <div class="step"><strong>2.</strong> Frys: -18°C. Frosta av om det blir mer än 5 mm is.</div>
             <div class="step"><strong>3.</strong> Kom ihåg att stänga dörrarna ordentligt!</div>
         </div>
-
         <div class="instruction-section">
             <h4>🔥 Kaminen</h4>
             <div class="step"><strong>1.</strong> Använd <strong>endast torr björkved</strong> (finns i vedbod).</div>
@@ -451,13 +295,11 @@
             <div class="step"><strong>3.</strong> Stäng spjället till hälften när brasan brinner bra.</div>
             <div class="step"><strong>4.</strong> Glöm inte att stänga spjället helt när du går ut.</div>
         </div>
-
         <div class="instruction-section">
             <h4>🗑️ Sopor</h4>
             <div class="step"><strong>1.</strong> Brännbart i grön påse, matavfall i brun påse.</div>
             <div class="step"><strong>2.</strong> Återvinning (glas, plast, metall) lämnas vid återvinningsstationen i byn.</div>
         </div>
-
         <div class="card" style="background: #f0f7f0;">
             <p style="font-size: 14px;"><strong>📞 Kontakt vid akuta problem:</strong> <br>Granne Sven: 070-123 45 67 <br>Vi svarar helst på sms.</p>
         </div>
@@ -466,23 +308,18 @@
     <div id="page-checklist" class="page">
         <h3 style="margin-bottom: 4px;">✅ Utcheckningslista</h3>
         <p class="small-note" style="margin-bottom: 12px;">Bocka i allt innan ni låser och åker hem.</p>
-
         <div class="checklist-progress">
             <div class="checklist-progress-fill" id="checklistProgress" style="width: 0%;"></div>
         </div>
         <div class="checklist-stats" id="checklistStats">0 / 6 klara</div>
-
         <div id="checklistContainer"><div class="loading-spinner">⏳ Laddar checklista...</div></div>
-
         <button class="btn-book" id="resetChecklistBtn" style="margin-top: 16px; background: #6d8a6d;">🔄 Återställ checklista</button>
     </div>
 
     <div id="page-mine" class="page">
         <h3 style="margin-bottom: 8px;">👤 Alla bokningar</h3>
         <p class="small-note" style="margin-bottom: 14px;">Här ser du alla släktingars bokningar.</p>
-
         <div id="myBookings"><div class="loading-spinner">⏳ Laddar bokningar...</div></div>
-
         <div class="card" style="background: #f8faf8; margin-top: 12px;">
             <p style="font-size: 14px;"><strong>💡 Tips:</strong> Vill du avboka? Klicka på "Avboka" under din bokning ovan.</p>
         </div>
@@ -492,12 +329,10 @@
         <div class="modal-box">
             <h2>📝 Boka stugan</h2>
             <div id="modalDateInfo" style="background: #eef4ee; padding: 8px 12px; border-radius: 8px; margin-bottom: 14px; font-weight: 600;"></div>
-
             <div class="input-group">
                 <label for="modalName">Ditt namn</label>
                 <input type="text" id="modalName" placeholder="t.ex. Kalle Karlsson">
             </div>
-
             <div class="input-group">
                 <label for="modalPersons">Antal personer</label>
                 <select id="modalPersons">
@@ -509,28 +344,26 @@
                     <option value="6">6 personer</option>
                 </select>
             </div>
-
             <div class="btn-group">
                 <button class="btn-cancel" id="modalCancel">Avbryt</button>
                 <button class="btn-confirm" id="modalConfirm">✅ Boka!</button>
             </div>
         </div>
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     // ============================================================
-    // 🔑 BYT UT DESSA MOT DINA EGNA NYCKLAR FRÅN SUPABASE
+    // 🔑 SUPABASE INSTÄLLNINGAR
     // ============================================================
     const SUPABASE_URL = 'https://sxubfqonrxiphklkpqxd.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_a5jYOx-HOflN7-RKtDUMZQ_EYWT6a9b';
 
     // ============================================================
-    // INIT SUPABASE
+    // SKAPA SUPABASE-KLIENT (endast EN gång)
     // ============================================================
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // ============================================================
     // GLOBALA VARIABLER
@@ -543,7 +376,7 @@
     // HÄMTA DATA FRÅN SUPABASE
     // ============================================================
     async function fetchBookings() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('bookings')
             .select('*')
             .order('start_date', { ascending: true });
@@ -556,7 +389,7 @@
     }
 
     async function fetchChecklist() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('checklist')
             .select('*')
             .order('id', { ascending: true });
@@ -679,7 +512,7 @@
                     renderChecklist();
                 }
 
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('checklist')
                     .update({ done: checked })
                     .eq('id', id);
@@ -731,7 +564,7 @@
             btn.addEventListener('click', async function() {
                 const id = this.dataset.id;
                 if (confirm('Är du säker på att du vill avboka denna bokning?')) {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('bookings')
                         .delete()
                         .eq('id', id);
@@ -789,7 +622,7 @@
             persons: persons
         };
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('bookings')
             .insert([newBooking]);
 
@@ -812,7 +645,7 @@
         if (confirm('Återställ alla checkboxar? (alla blir obockade)')) {
             for (const item of checklistItems) {
                 if (item.done) {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('checklist')
                         .update({ done: false })
                         .eq('id', item.id);
