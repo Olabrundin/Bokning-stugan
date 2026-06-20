@@ -80,6 +80,16 @@
         .booking-item .dates { font-weight: 700; font-size: 16px; }
         .booking-item .meta { font-size: 14px; color: #4d6a4d; margin-top: 4px; }
         .booking-item .booked-by { font-weight: 600; color: #1e3d1e; }
+        .booking-item .badge-large {
+            display: inline-block;
+            background: #d4a843;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 6px;
+        }
         .btn-book {
             background: #2d5a2d;
             color: white;
@@ -235,6 +245,15 @@
             padding: 40px 0;
             color: #4d6a4d;
         }
+        .error-box {
+            background: #fde8e8;
+            border-left: 4px solid #b33c3c;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            color: #6a2e2e;
+            font-size: 14px;
+        }
         @media (min-width: 600px) {
             .app-container { border-radius: 16px; margin-top: 20px; margin-bottom: 20px; min-height: auto; }
             body { background: #d8e4d8; padding-bottom: 20px; }
@@ -337,11 +356,12 @@
                 <label for="modalPersons">Antal personer</label>
                 <select id="modalPersons">
                     <option value="1">1 person</option>
-                    <option value="2" selected>2 personer</option>
+                    <option value="2">2 personer</option>
                     <option value="3">3 personer</option>
                     <option value="4">4 personer</option>
                     <option value="5">5 personer</option>
                     <option value="6">6 personer</option>
+                    <option value="7">🌟 Större Sällskap (7+)</option>
                 </select>
             </div>
             <div class="btn-group">
@@ -360,8 +380,11 @@
     const SUPABASE_URL = 'https://sxubfqonrxiphklkpqxd.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_a5jYOx-HOflN7-RKtDUMZQ_EYWT6a9b';
 
+    console.log('🔑 Supabase URL:', SUPABASE_URL);
+    console.log('🔑 Använder publishable key');
+
     // ============================================================
-    // SKAPA SUPABASE-KLIENT (endast EN gång)
+    // SKAPA SUPABASE-KLIENT
     // ============================================================
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -376,28 +399,32 @@
     // HÄMTA DATA FRÅN SUPABASE
     // ============================================================
     async function fetchBookings() {
+        console.log('📡 Hämtar bokningar från Supabase...');
         const { data, error } = await supabaseClient
             .from('bookings')
             .select('*')
             .order('start_date', { ascending: true });
 
         if (error) {
-            console.error('Fel vid hämtning av bokningar:', error);
+            console.error('❌ Fel vid hämtning av bokningar:', error);
             return [];
         }
+        console.log('✅ Bokningar hämtade:', data.length, 'st');
         return data;
     }
 
     async function fetchChecklist() {
+        console.log('📡 Hämtar checklista från Supabase...');
         const { data, error } = await supabaseClient
             .from('checklist')
             .select('*')
             .order('id', { ascending: true });
 
         if (error) {
-            console.error('Fel vid hämtning av checklista:', error);
+            console.error('❌ Fel vid hämtning av checklista:', error);
             return [];
         }
+        console.log('✅ Checklista hämtad:', data.length, 'st');
         return data;
     }
 
@@ -456,7 +483,7 @@
             html += `
                 <div class="booking-item" style="border-left-color: #4a7a4a;">
                     <div class="dates">📅 ${label} <span style="font-weight:normal;font-size:14px;color:#4d6a4d;">(enkel dag)</span></div>
-                    <div class="meta">🟢 Ledigt · boka för 1-6 personer</div>
+                    <div class="meta">🟢 Ledigt · boka för 1-6 personer <span class="badge-large">🌟 7+ möjligt</span></div>
                     <button class="btn-book" data-date="${dateStr}">📋 Boka denna dag</button>
                 </div>
             `;
@@ -470,6 +497,7 @@
 
         container.querySelectorAll('.btn-book[data-date]').forEach(btn => {
             btn.addEventListener('click', function() {
+                console.log('🖱️ Klick på boka:', this.dataset.date);
                 openBookingModal(this.dataset.date);
             });
         });
@@ -518,7 +546,7 @@
                     .eq('id', id);
 
                 if (error) {
-                    console.error('Fel vid uppdatering av checklista:', error);
+                    console.error('❌ Fel vid uppdatering av checklista:', error);
                     if (item) item.done = !checked;
                     renderChecklist();
                     alert('Kunde inte spara ändringen. Försök igen.');
@@ -548,11 +576,15 @@
             const options = { year: 'numeric', month: 'short', day: 'numeric' };
             const startStr = start.toLocaleDateString('sv-SE', options);
             const endStr = end.toLocaleDateString('sv-SE', options);
+            
+            // Visa "🌟 Större Sällskap" om antal personer är 7 eller mer
+            const personsDisplay = b.persons >= 7 ? '🌟 Större Sällskap (7+)' : `${b.persons} personer`;
+            
             html += `
                 <div class="booking-item" style="border-left-color: #b33c3c;">
                     <div class="booked-by">👤 ${b.name}</div>
                     <div class="dates">📅 ${startStr} – ${endStr}</div>
-                    <div class="meta">👥 ${b.persons} personer</div>
+                    <div class="meta">👥 ${personsDisplay}</div>
                     <button class="btn-danger" data-id="${b.id}">🗑️ Avboka</button>
                 </div>
             `;
@@ -596,6 +628,7 @@
         document.getElementById('modalName').value = '';
         document.getElementById('modalPersons').value = '2';
         document.getElementById('bookingModal').classList.add('show');
+        console.log('📋 Modal öppnad för:', dateStr);
     }
 
     function closeBookingModal() {
@@ -604,7 +637,10 @@
     }
 
     async function confirmBooking() {
-        if (!selectedDateForBooking) return;
+        if (!selectedDateForBooking) {
+            console.warn('⚠️ Ingen dag vald');
+            return;
+        }
 
         const name = document.getElementById('modalName').value.trim();
         const persons = parseInt(document.getElementById('modalPersons').value);
@@ -622,19 +658,25 @@
             persons: persons
         };
 
-        const { error } = await supabaseClient
+        console.log('📤 Försöker boka:', newBooking);
+
+        const { data, error } = await supabaseClient
             .from('bookings')
-            .insert([newBooking]);
+            .insert([newBooking])
+            .select();
 
         if (error) {
-            alert('Kunde inte boka. Försök igen.');
-            console.error(error);
+            console.error('❌ Fel vid bokning:', error);
+            alert('Kunde inte boka. Fel: ' + error.message);
         } else {
+            console.log('✅ Bokning lyckades:', data);
             allBookings.push(newBooking);
             closeBookingModal();
             renderBookings();
             renderAllBookings();
-            alert(`✅ Tack ${name}! Du har bokat ${selectedDateForBooking}.`);
+            
+            const personsText = persons >= 7 ? '🌟 Större Sällskap (7+)' : `${persons} personer`;
+            alert(`✅ Tack ${name}! Du har bokat ${selectedDateForBooking} med ${personsText}.`);
         }
     }
 
@@ -714,6 +756,7 @@
     loadAllData();
 
     console.log('🏡 Skagene Stugboken med Supabase är laddad!');
+    console.log('🌟 Större Sällskap (7+) är nu tillgängligt!');
 </script>
 </body>
 </html>
