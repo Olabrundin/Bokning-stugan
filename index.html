@@ -32,7 +32,6 @@
         .app-header p { font-size: 14px; opacity: 0.85; margin-top: 2px; }
         .tab-bar {
             display: flex;
-            background: #e8efe8;
             border-bottom: 1px solid #c8d6c8;
             position: sticky;
             top: 78px;
@@ -59,6 +58,70 @@
         .tab-btn i { display: block; font-size: 20px; font-style: normal; margin-bottom: 2px; }
         .page { display: none; padding: 16px 16px 30px 16px; background: white; }
         .page.active { display: block; }
+
+        /* Date group card */
+        .date-group {
+            border: 1px solid #e2ece2;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+        .date-group-header {
+            background: #2d5a2d;
+            color: white;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .date-group-header .date-label { font-weight: 700; font-size: 16px; }
+        .date-group-header .date-meta { font-size: 13px; opacity: 0.85; }
+        .booking-entry {
+            padding: 12px 14px;
+            border-bottom: 1px solid #eef4ee;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .booking-entry:last-child { border-bottom: none; }
+        .booking-entry-info .booker-name { font-weight: 700; font-size: 15px; color: #1e3d1e; }
+        .booking-entry-info .booker-meta { font-size: 13px; color: #4d6a4d; margin-top: 2px; }
+        .booking-entry-info .booker-note {
+            font-size: 13px;
+            color: #3d5a3d;
+            margin-top: 5px;
+            font-style: italic;
+            background: #f0f7f0;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+        .btn-danger {
+            background: #b33c3c;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .add-to-date-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #f0f7f0;
+            color: #2d5a2d;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border-top: 1px solid #e2ece2;
+        }
+        .add-to-date-btn:hover { background: #e4f0e4; }
+
+        /* Ny bokning-fliken */
         .card {
             background: #f8faf8;
             border-radius: 12px;
@@ -66,35 +129,38 @@
             margin-bottom: 14px;
             border: 1px solid #e2ece2;
         }
-        .card h3 { font-size: 17px; margin-bottom: 6px; color: #1e3d1e; }
-        .card p, .card li { font-size: 15px; line-height: 1.5; color: #2d3d2d; }
-        .card ul { padding-left: 20px; margin-top: 6px; }
-        .booking-item {
-            background: white;
+        .input-group { margin-bottom: 12px; }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #2d4a2d;
+        }
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #c8dcc8;
             border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
-            border-left: 5px solid #2d5a2d;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            font-size: 16px;
+            background: white;
+            font-family: inherit;
         }
-        .booking-item .dates { font-weight: 700; font-size: 16px; }
-        .booking-item .meta { font-size: 14px; color: #4d6a4d; margin-top: 4px; }
-        .booking-item .booked-by { font-weight: 600; color: #1e3d1e; }
-        .booking-item .badge-large {
-            display: inline-block;
-            background: #d4a843;
-            color: white;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 20px;
-            margin-left: 6px;
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: 2px solid #2d5a2d;
+            border-color: transparent;
         }
+        .input-group input.error { border-color: #b33c3c; outline: 2px solid #b33c3c; }
+        .field-error { color: #b33c3c; font-size: 13px; margin-top: 4px; display: none; }
         .btn-book {
             background: #2d5a2d;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 13px 20px;
             border-radius: 30px;
             font-size: 16px;
             font-weight: 600;
@@ -104,70 +170,8 @@
         }
         .btn-book:active { background: #1a3d1a; }
         .btn-book:disabled { background: #a0b8a0; cursor: not-allowed; }
-        .btn-danger {
-            background: #b33c3c;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            cursor: pointer;
-            margin-top: 6px;
-        }
-        .btn-danger:active { background: #8a2e2e; }
-        .input-group { margin-bottom: 12px; }
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 4px;
-            color: #2d4a2d;
-        }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #c8dcc8;
-            border-radius: 10px;
-            font-size: 16px;
-            background: white;
-        }
-        .input-group input:focus, .input-group select:focus {
-            outline: 2px solid #2d5a2d;
-            border-color: transparent;
-        }
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid #e8f0e8;
-        }
-        .checklist-item:last-child { border-bottom: none; }
-        .checklist-item input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            margin-top: 2px;
-            accent-color: #2d5a2d;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-        .checklist-item label { font-size: 15px; line-height: 1.4; cursor: pointer; }
-        .checklist-item.done label { text-decoration: line-through; color: #6d8a6d; }
-        .checklist-progress {
-            background: #e8efe8;
-            border-radius: 20px;
-            height: 8px;
-            margin: 12px 0 6px 0;
-            overflow: hidden;
-        }
-        .checklist-progress-fill {
-            height: 100%;
-            background: #2d5a2d;
-            width: 0%;
-            border-radius: 20px;
-            transition: width 0.3s;
-        }
-        .checklist-stats { font-size: 14px; color: #4d6a4d; text-align: right; }
+
+        /* Instructions */
         .instruction-section { margin-bottom: 18px; }
         .instruction-section h4 {
             font-size: 16px;
@@ -175,7 +179,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         .instruction-section .step {
             background: white;
@@ -186,74 +190,83 @@
             font-size: 14px;
         }
         .instruction-section .step strong { color: #2d5a2d; }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-box {
-            background: white;
-            border-radius: 20px;
-            padding: 24px 20px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .modal-box h2 { font-size: 20px; margin-bottom: 16px; color: #1e3d1e; }
-        .modal-box .btn-group {
+
+        /* Checklist */
+        .checklist-item {
             display: flex;
-            gap: 10px;
-            margin-top: 16px;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8f0e8;
         }
-        .modal-box .btn-group button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 16px;
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-item input[type="checkbox"] {
+            width: 22px; height: 22px;
+            margin-top: 2px;
+            accent-color: #2d5a2d;
+            flex-shrink: 0;
             cursor: pointer;
         }
-        .modal-box .btn-group .btn-cancel {
-            background: #e8ece8;
-            color: #3d5a3d;
+        .checklist-item label { font-size: 15px; line-height: 1.4; cursor: pointer; }
+        .checklist-item.done label { text-decoration: line-through; color: #6d8a6d; }
+        .checklist-progress {
+            background: #e8efe8; border-radius: 20px;
+            height: 8px; margin: 12px 0 6px 0; overflow: hidden;
         }
-        .modal-box .btn-group .btn-confirm {
-            background: #2d5a2d;
-            color: white;
+        .checklist-progress-fill {
+            height: 100%; background: #2d5a2d;
+            width: 0%; border-radius: 20px; transition: width 0.3s;
         }
-        .empty-state { text-align: center; padding: 30px 10px; color: #6d8a6d; }
-        .empty-state span { font-size: 40px; display: block; margin-bottom: 8px; }
-        .small-note { font-size: 13px; color: #6d8a6d; margin-top: 4px; }
+        .checklist-stats { font-size: 14px; color: #4d6a4d; text-align: right; }
+
+        /* Misc */
         .highlight-box {
             background: #fcf8e8;
             border-left: 4px solid #d4a843;
             padding: 12px 14px;
             border-radius: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
-        .loading-spinner {
-            text-align: center;
-            padding: 40px 0;
-            color: #4d6a4d;
+        .empty-state { text-align: center; padding: 30px 10px; color: #6d8a6d; }
+        .empty-state span { font-size: 40px; display: block; margin-bottom: 8px; }
+        .small-note { font-size: 13px; color: #6d8a6d; margin-top: 4px; }
+        .loading-spinner { text-align: center; padding: 40px 0; color: #4d6a4d; }
+        .success-banner {
+            background: #eaf4ea; border-left: 4px solid #2d5a2d;
+            padding: 12px 14px; border-radius: 8px;
+            margin-bottom: 14px; color: #1e3d1e;
+            font-size: 14px; display: none;
         }
-        .error-box {
-            background: #fde8e8;
-            border-left: 4px solid #b33c3c;
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            color: #6a2e2e;
-            font-size: 14px;
+
+        /* Modal */
+        .modal-overlay {
+            display: none; position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 100;
+            justify-content: center; align-items: center;
         }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: white; border-radius: 20px;
+            padding: 24px 20px; max-width: 400px;
+            width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-box h2 { font-size: 20px; margin-bottom: 16px; color: #1e3d1e; }
+        .modal-date-info {
+            background: #eef4ee; padding: 8px 12px;
+            border-radius: 8px; margin-bottom: 14px;
+            font-weight: 600; font-size: 15px;
+        }
+        .modal-btn-group { display: flex; gap: 10px; margin-top: 16px; }
+        .modal-btn-group button {
+            flex: 1; padding: 12px; border: none;
+            border-radius: 30px; font-weight: 600;
+            font-size: 16px; cursor: pointer;
+        }
+        .btn-cancel { background: #e8ece8; color: #3d5a3d; }
+        .btn-confirm { background: #2d5a2d; color: white; }
+
         @media (min-width: 600px) {
             .app-container { border-radius: 16px; margin-top: 20px; margin-bottom: 20px; min-height: auto; }
             body { background: #d8e4d8; padding-bottom: 20px; }
@@ -261,7 +274,6 @@
     </style>
 </head>
 <body>
-
 <div class="app-container">
 
     <header class="app-header">
@@ -269,495 +281,325 @@
         <p>Västra Skagene · Värmland</p>
     </header>
 
-    <div class="tab-bar" id="tabBar">
-        <button class="tab-btn active" data-page="page-booking">
-            <i>📅</i> Boka
-        </button>
-        <button class="tab-btn" data-page="page-instructions">
-            <i>📖</i> Instruktioner
-        </button>
-        <button class="tab-btn" data-page="page-checklist">
-            <i>✅</i> Checklista
-        </button>
-        <button class="tab-btn" data-page="page-mine">
-            <i>👤</i> Alla bokningar
-        </button>
+    <div class="tab-bar">
+        <button class="tab-btn active" data-page="page-booking"><i>📅</i> Bokningar</button>
+        <button class="tab-btn" data-page="page-new"><i>➕</i> Ny bokning</button>
+        <button class="tab-btn" data-page="page-instructions"><i>📖</i> Instruktioner</button>
+        <button class="tab-btn" data-page="page-checklist"><i>✅</i> Checklista</button>
     </div>
 
+    <!-- BOKNINGAR -->
     <div id="page-booking" class="page active">
         <div class="highlight-box">
-            ⚠️ <strong>Kom ihåg:</strong> Först till kvarn gäller. Avboka i god tid om ni inte kan komma!
+            ⚠️ <strong>Kom ihåg:</strong> Avboka i god tid om ni inte kan komma!
         </div>
-        <h3 style="margin-bottom: 8px; font-size: 17px;">📆 Lediga datum</h3>
-        <p class="small-note" style="margin-bottom: 12px;">Klicka "Boka" på ett ledigt datum nedan</p>
         <div id="bookingList"><div class="loading-spinner">⏳ Laddar bokningar...</div></div>
     </div>
 
-    <div id="page-instructions" class="page">
-        <h3 style="margin-bottom: 12px;">📖 Praktiska instruktioner</h3>
-        <div class="instruction-section">
-            <h4>💧 Vatten & Ström</h4>
-            <div class="step"><strong>1.</strong> Huvudkran för vatten sitter under diskbänken, vrid <strong>medurs</strong> för att öppna.</div>
-            <div class="step"><strong>2.</strong> Elpåslaget sitter bakom Lillillstugan. Huvudbrytare = längst till vänster.</div>
-            <div class="step"><strong>3.</strong> Värmepumpen: sätt på fläktläge 2 för värme.</div>
-        </div>
-        <div class="instruction-section">
-            <h4>❄️ Kyl & Frys</h4>
-            <div class="step"><strong>1.</strong> Kylskåpet: ställ in på 4°C (mittenläget, 3,5).</div>
-            <div class="step"><strong>2.</strong> Frys: -18°C. Frosta av om det blir mer än 5 mm is.</div>
-            <div class="step"><strong>3.</strong> Kom ihåg att stänga dörrarna ordentligt!</div>
-        </div>
-        <div class="instruction-section">
-            <h4>🔥 Kaminen</h4>
-            <div class="step"><strong>1.</strong> Använd <strong>endast torr ved</strong> (finns i skyddet nere vid sjöbodet).</div>
-            <div class="step"><strong>2.</strong> Öppna spjället helt innan du tänder.</div>
-            <div class="step"><strong>3.</strong> Stäng spjället till hälften när brasan brinner bra.</div>
-            <div class="step"><strong>4.</strong> Glöm inte att stänga spjället helt när du går ut.</div>
-            <div class="step"><strong>5.</strong> Elda med omsorg, max 1,5 kg ved i timmen.</div>
-        </div>
-        <div class="instruction-section">
-            <h4>🗑️ Sopor</h4>
-            <div class="step"><strong>1.</strong> Alla sopor tas med hem, det finns ingen soptunna som töms eller går att slänga i.</div>
-            <div class="step"><strong>2.</strong> Gäller all typ av avfall eller pant, allt tas med hem. </div>
-        </div>
-        <div class="card" style="background: #f0f7f0;">
-            <p style="font-size: 14px;"><strong>📞 Kontakt vid akuta problem:</strong> <br>Granne Sven: 070-123 45 67 <br>Vi svarar helst på sms.</p>
-        </div>
-    </div>
+    <!-- NY BOKNING -->
+    <div id="page-new" class="page">
+        <div id="successBanner" class="success-banner">✅ Bokning sparad! Du hittar den under "Bokningar".</div>
+        <div class="card">
+            <div style="font-size:17px;font-weight:700;color:#1e3d1e;margin-bottom:14px;">📝 Ny bokning</div>
 
-    <div id="page-checklist" class="page">
-        <h3 style="margin-bottom: 4px;">✅ Utcheckningslista</h3>
-        <p class="small-note" style="margin-bottom: 12px;">Bocka i allt innan ni låser och åker hem.</p>
-        <div class="checklist-progress">
-            <div class="checklist-progress-fill" id="checklistProgress" style="width: 0%;"></div>
-        </div>
-        <div class="checklist-stats" id="checklistStats">0 / 6 klara</div>
-        <div id="checklistContainer"><div class="loading-spinner">⏳ Laddar checklista...</div></div>
-        <button class="btn-book" id="resetChecklistBtn" style="margin-top: 16px; background: #6d8a6d;">🔄 Återställ checklista</button>
-    </div>
-
-    <div id="page-mine" class="page">
-        <h3 style="margin-bottom: 8px;">👤 Alla bokningar</h3>
-        <p class="small-note" style="margin-bottom: 14px;">Här ser du alla släktingars bokningar.</p>
-        <div id="myBookings"><div class="loading-spinner">⏳ Laddar bokningar...</div></div>
-        <div class="card" style="background: #f8faf8; margin-top: 12px;">
-            <p style="font-size: 14px;"><strong>💡 Tips:</strong> Vill du avboka? Klicka på "Avboka" under din bokning ovan.</p>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="bookingModal">
-        <div class="modal-box">
-            <h2>📝 Boka stugan</h2>
-            <div id="modalDateInfo" style="background: #eef4ee; padding: 8px 12px; border-radius: 8px; margin-bottom: 14px; font-weight: 600;"></div>
             <div class="input-group">
-                <label for="modalName">Ditt namn</label>
-                <input type="text" id="modalName" placeholder="t.ex. Kalle Karlsson">
+                <label for="fName">Ditt namn <span style="color:#b33c3c;">*</span></label>
+                <input type="text" id="fName" placeholder="t.ex. Kalle Karlsson" autocomplete="name">
+                <div class="field-error" id="errName">⚠️ Namn måste fyllas i.</div>
             </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="input-group">
+                    <label for="fFrom">Ankomst <span style="color:#b33c3c;">*</span></label>
+                    <input type="date" id="fFrom">
+                    <div class="field-error" id="errFrom">⚠️ Välj datum.</div>
+                </div>
+                <div class="input-group">
+                    <label for="fTo">Avresa <span style="color:#b33c3c;">*</span></label>
+                    <input type="date" id="fTo">
+                    <div class="field-error" id="errTo">⚠️ Välj datum.</div>
+                </div>
+            </div>
+
             <div class="input-group">
-                <label for="modalPersons">Antal personer</label>
-                <select id="modalPersons">
+                <label for="fPersons">Antal personer</label>
+                <select id="fPersons">
                     <option value="1">1 person</option>
-                    <option value="2">2 personer</option>
+                    <option value="2" selected>2 personer</option>
                     <option value="3">3 personer</option>
                     <option value="4">4 personer</option>
                     <option value="5">5 personer</option>
                     <option value="6">6 personer</option>
-                    <option value="7">🌟 Större Sällskap (7+)</option>
+                    <option value="7">🌟 Större sällskap (7+)</option>
                 </select>
             </div>
-            <div class="btn-group">
-                <button class="btn-cancel" id="modalCancel">Avbryt</button>
-                <button class="btn-confirm" id="modalConfirm">✅ Boka!</button>
+
+            <div class="input-group">
+                <label for="fNote">Anteckning (valfri)</label>
+                <textarea id="fNote" rows="3" placeholder="T.ex. firar midsommar, tar med hunden, behöver hjälp med ved..."></textarea>
             </div>
+
+            <button class="btn-book" id="saveBtn" onclick="saveBooking()">✅ Spara bokning</button>
         </div>
     </div>
+
+    <!-- INSTRUKTIONER -->
+    <div id="page-instructions" class="page">
+        <h3 style="margin-bottom:12px;">📖 Praktiska instruktioner</h3>
+        <div class="card" style="background:#f0f7f0;">
+            <div class="instruction-section">
+                <h4>💧 Vatten & Ström</h4>
+                <div class="step"><strong>1.</strong> Huvudkran för vatten sitter under diskbänken, vrid <strong>medurs</strong> för att öppna.</div>
+                <div class="step"><strong>2.</strong> Elpåslaget sitter bakom Lillstugan. Huvudbrytare = längst till vänster.</div>
+                <div class="step"><strong>3.</strong> Värmepumpen: sätt på fläktläge 2 för värme.</div>
+            </div>
+            <div class="instruction-section">
+                <h4>❄️ Kyl & Frys</h4>
+                <div class="step"><strong>1.</strong> Kylskåpet: ställ in på 4°C (mittenläget, 3,5).</div>
+                <div class="step"><strong>2.</strong> Frys: -18°C. Frosta av om det blir mer än 5 mm is.</div>
+                <div class="step"><strong>3.</strong> Kom ihåg att stänga dörrarna ordentligt!</div>
+            </div>
+            <div class="instruction-section">
+                <h4>🔥 Kaminen</h4>
+                <div class="step"><strong>1.</strong> Använd <strong>endast torr ved</strong> (finns i skyddet nere vid sjöbodet).</div>
+                <div class="step"><strong>2.</strong> Öppna spjället helt innan du tänder.</div>
+                <div class="step"><strong>3.</strong> Stäng spjället till hälften när brasan brinner bra.</div>
+                <div class="step"><strong>4.</strong> Glöm inte att stänga spjället helt när du går ut.</div>
+                <div class="step"><strong>5.</strong> Elda med omsorg, max 1,5 kg ved i timmen.</div>
+            </div>
+            <div class="instruction-section" style="margin-bottom:0">
+                <h4>🗑️ Sopor</h4>
+                <div class="step"><strong>1.</strong> Alla sopor tas med hem, det finns ingen soptunna som töms.</div>
+                <div class="step"><strong>2.</strong> Gäller all typ av avfall eller pant — allt tas med hem.</div>
+            </div>
+        </div>
+        <div class="card" style="background:#f0f7f0;">
+            <p style="font-size:14px;"><strong>📞 Kontakt vid akuta problem:</strong><br>Granne Sven: 070-123 45 67<br>Vi svarar helst på sms.</p>
+        </div>
+    </div>
+
+    <!-- CHECKLISTA -->
+    <div id="page-checklist" class="page">
+        <h3 style="margin-bottom:4px;">✅ Utcheckningslista</h3>
+        <p class="small-note" style="margin-bottom:12px;">Bocka i allt innan ni låser och åker hem.</p>
+        <div class="checklist-progress">
+            <div class="checklist-progress-fill" id="checklistProgress"></div>
+        </div>
+        <div class="checklist-stats" id="checklistStats">0 / 0 klara</div>
+        <div id="checklistContainer"><div class="loading-spinner">⏳ Laddar checklista...</div></div>
+        <button class="btn-book" id="resetChecklistBtn" style="margin-top:16px;background:#6d8a6d;">🔄 Återställ checklista</button>
+    </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    // ============================================================
-    // 🔑 SUPABASE INSTÄLLNINGAR
-    // ============================================================
-    const SUPABASE_URL = 'https://sxubfqonrxiphklkpqxd.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_a5jYOx-HOflN7-RKtDUMZQ_EYWT6a9b';
+const SUPABASE_URL  = 'https://sxubfqonrxiphklkpqxd.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_a5jYOx-HOflN7-RKtDUMZQ_EYWT6a9b';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    console.log('🔑 Supabase URL:', SUPABASE_URL);
-    console.log('🔑 Använder publishable key');
+let allBookings   = [];
+let checklistItems = [];
 
-    // ============================================================
-    // SKAPA SUPABASE-KLIENT
-    // ============================================================
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ── helpers ──────────────────────────────────────────────────
+function fmtDate(d) {
+    const dt = new Date(d + 'T00:00:00');
+    const wd = ['sön','mån','tis','ons','tor','fre','lör'];
+    const mo = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+    return `${wd[dt.getDay()]} ${dt.getDate()} ${mo[dt.getMonth()]} ${dt.getFullYear()}`;
+}
+function fmtShort(d) {
+    const dt = new Date(d + 'T00:00:00');
+    const mo = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+    return `${dt.getDate()} ${mo[dt.getMonth()]}`;
+}
+function nightsBetween(a, b) {
+    return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
 
-    // ============================================================
-    // GLOBALA VARIABLER
-    // ============================================================
-    let allBookings = [];
-    let checklistItems = [];
-    let selectedDateForBooking = null;
+// ── fetch ─────────────────────────────────────────────────────
+async function fetchBookings() {
+    const { data, error } = await sb.from('bookings').select('*').order('start_date', { ascending: true });
+    if (error) { console.error(error); return []; }
+    return data;
+}
+async function fetchChecklist() {
+    const { data, error } = await sb.from('checklist').select('*').order('id', { ascending: true });
+    if (error) { console.error(error); return []; }
+    return data;
+}
 
-    // ============================================================
-    // HÄMTA DATA FRÅN SUPABASE
-    // ============================================================
-    async function fetchBookings() {
-        console.log('📡 Hämtar bokningar från Supabase...');
-        const { data, error } = await supabaseClient
-            .from('bookings')
-            .select('*')
-            .order('start_date', { ascending: true });
-
-        if (error) {
-            console.error('❌ Fel vid hämtning av bokningar:', error);
-            return [];
-        }
-        console.log('✅ Bokningar hämtade:', data.length, 'st');
-        return data;
+// ── render bookings ───────────────────────────────────────────
+function renderBookings() {
+    const container = document.getElementById('bookingList');
+    if (!allBookings.length) {
+        container.innerHTML = `<div class="empty-state"><span>📭</span><p>Inga bokningar än.</p><p class="small-note">Gå till "Ny bokning" och boka!</p></div>`;
+        return;
     }
 
-    async function fetchChecklist() {
-        console.log('📡 Hämtar checklista från Supabase...');
-        const { data, error } = await supabaseClient
-            .from('checklist')
-            .select('*')
-            .order('id', { ascending: true });
+    const sorted = [...allBookings].sort((a,b) => a.start_date.localeCompare(b.start_date));
 
-        if (error) {
-            console.error('❌ Fel vid hämtning av checklista:', error);
-            return [];
-        }
-        console.log('✅ Checklista hämtad:', data.length, 'st');
-        return data;
-    }
+    let html = '';
+    sorted.forEach(b => {
+        const nights = nightsBetween(b.start_date, b.end_date);
+        const nightsStr = nights === 0 ? 'endagsbesök' : `${nights} natt${nights > 1 ? 'er' : ''}`;
+        const persons = b.persons >= 7 ? '🌟 Större sällskap (7+)' : `${b.persons} pers.`;
+        const today = new Date().toISOString().split('T')[0];
+        const isActive = b.start_date <= today && b.end_date >= today;
+        const isPast   = b.end_date < today;
 
-    // ============================================================
-    // RENDERING
-    // ============================================================
-
-    function getAvailableDateSlots() {
-        const slots = [];
-        const start = new Date(2026, 5, 15);
-        const end = new Date(2026, 7, 31);
-        const current = new Date(start);
-
-        const bookedDays = new Set();
-        allBookings.forEach(b => {
-            const s = new Date(b.start_date);
-            const e = new Date(b.end_date);
-            for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
-                bookedDays.add(d.toISOString().split('T')[0]);
-            }
-        });
-
-        while (current <= end) {
-            const dateStr = current.toISOString().split('T')[0];
-            if (!bookedDays.has(dateStr)) {
-                slots.push(dateStr);
-            }
-            current.setDate(current.getDate() + 1);
-        }
-        return slots;
-    }
-
-    function renderBookings() {
-        const container = document.getElementById('bookingList');
-        const available = getAvailableDateSlots();
-
-        if (available.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <span>🏖️</span>
-                    <p>Tyvärr, alla datum är bokade!</p>
-                    <p class="small-note">Kolla "Alla bokningar" om du vill avboka.</p>
+        html += `
+        <div class="date-group" style="opacity:${isPast ? '0.6' : '1'}">
+            <div class="date-group-header" style="background:${isPast ? '#6d8a6d' : isActive ? '#1e3d1e' : '#2d5a2d'}">
+                <div>
+                    <div class="date-label">📅 ${fmtShort(b.start_date)}${b.start_date !== b.end_date ? ' – ' + fmtShort(b.end_date) : ''}</div>
+                    <div class="date-meta">${nightsStr} · ${isPast ? 'Avslutad' : isActive ? '🟢 Pågår nu' : 'Kommande'}</div>
                 </div>
-            `;
-            return;
-        }
-
-        const showSlots = available.slice(0, 20);
-        let html = '';
-        showSlots.forEach(dateStr => {
-            const d = new Date(dateStr + 'T00:00:00');
-            const weekdays = ['sön','mån','tis','ons','tor','fre','lör'];
-            const months = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
-            const label = `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
-
-            html += `
-                <div class="booking-item" style="border-left-color: #4a7a4a;">
-                    <div class="dates">📅 ${label} <span style="font-weight:normal;font-size:14px;color:#4d6a4d;">(enkel dag)</span></div>
-                    <div class="meta">🟢 Ledigt · boka för 1-6 personer <span class="badge-large">🌟 7+ möjligt</span></div>
-                    <button class="btn-book" data-date="${dateStr}">📋 Boka denna dag</button>
+            </div>
+            <div class="booking-entry">
+                <div class="booking-entry-info">
+                    <div class="booker-name">👤 ${b.name}</div>
+                    <div class="booker-meta">👥 ${persons}</div>
+                    ${b.note ? `<div class="booker-note">💬 ${b.note}</div>` : ''}
                 </div>
-            `;
-        });
-
-        if (available.length > 20) {
-            html += `<p class="small-note" style="text-align:center;padding:8px;">... och ${available.length - 20} dagar till. Boka en dag i taget!</p>`;
-        }
-
-        container.innerHTML = html;
-
-        container.querySelectorAll('.btn-book[data-date]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                console.log('🖱️ Klick på boka:', this.dataset.date);
-                openBookingModal(this.dataset.date);
-            });
-        });
-    }
-
-    function renderChecklist() {
-        const container = document.getElementById('checklistContainer');
-        const doneCount = checklistItems.filter(item => item.done).length;
-        const total = checklistItems.length;
-
-        if (checklistItems.length === 0) {
-            container.innerHTML = `<div class="empty-state"><span>📋</span><p>Inga checklist-punkter hittades.</p></div>`;
-            return;
-        }
-
-        let html = '';
-        checklistItems.forEach((item) => {
-            const doneClass = item.done ? 'done' : '';
-            html += `
-                <div class="checklist-item ${doneClass}">
-                    <input type="checkbox" ${item.done ? 'checked' : ''} data-id="${item.id}">
-                    <label>${item.text}</label>
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
-
-        document.getElementById('checklistProgress').style.width = (total > 0 ? (doneCount / total * 100) : 0) + '%';
-        document.getElementById('checklistStats').textContent = `${doneCount} / ${total} klara`;
-
-        container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-            cb.addEventListener('change', async function() {
-                const id = parseInt(this.dataset.id);
-                const checked = this.checked;
-
-                const item = checklistItems.find(i => i.id === id);
-                if (item) {
-                    item.done = checked;
-                    renderChecklist();
-                }
-
-                const { error } = await supabaseClient
-                    .from('checklist')
-                    .update({ done: checked })
-                    .eq('id', id);
-
-                if (error) {
-                    console.error('❌ Fel vid uppdatering av checklista:', error);
-                    if (item) item.done = !checked;
-                    renderChecklist();
-                    alert('Kunde inte spara ändringen. Försök igen.');
-                }
-            });
-        });
-    }
-
-    function renderAllBookings() {
-        const container = document.getElementById('myBookings');
-
-        if (allBookings.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <span>📭</span>
-                    <p>Inga bokningar än.</p>
-                    <p class="small-note">Gå till fliken "Boka" och välj en ledig dag.</p>
-                </div>
-            `;
-            return;
-        }
-
-        let html = '';
-        allBookings.forEach((b) => {
-            const start = new Date(b.start_date + 'T00:00:00');
-            const end = new Date(b.end_date + 'T00:00:00');
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            const startStr = start.toLocaleDateString('sv-SE', options);
-            const endStr = end.toLocaleDateString('sv-SE', options);
-            
-            // Visa "🌟 Större Sällskap" om antal personer är 7 eller mer
-            const personsDisplay = b.persons >= 7 ? '🌟 Större Sällskap (7+)' : `${b.persons} personer`;
-            
-            html += `
-                <div class="booking-item" style="border-left-color: #b33c3c;">
-                    <div class="booked-by">👤 ${b.name}</div>
-                    <div class="dates">📅 ${startStr} – ${endStr}</div>
-                    <div class="meta">👥 ${personsDisplay}</div>
-                    <button class="btn-danger" data-id="${b.id}">🗑️ Avboka</button>
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
-
-        container.querySelectorAll('.btn-danger').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const id = this.dataset.id;
-                if (confirm('Är du säker på att du vill avboka denna bokning?')) {
-                    const { error } = await supabaseClient
-                        .from('bookings')
-                        .delete()
-                        .eq('id', id);
-
-                    if (error) {
-                        alert('Kunde inte avboka. Försök igen.');
-                        console.error(error);
-                    } else {
-                        allBookings = allBookings.filter(b => b.id !== id);
-                        renderAllBookings();
-                        renderBookings();
-                    }
-                }
-            });
-        });
-    }
-
-    // ============================================================
-    // MODAL
-    // ============================================================
-    function openBookingModal(dateStr) {
-        selectedDateForBooking = dateStr;
-        const d = new Date(dateStr + 'T00:00:00');
-        const weekdays = ['söndag','måndag','tisdag','onsdag','torsdag','fredag','lördag'];
-        const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
-        const label = `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-
-        document.getElementById('modalDateInfo').textContent = `📅 ${label}`;
-        document.getElementById('modalName').value = '';
-        document.getElementById('modalPersons').value = '2';
-        document.getElementById('bookingModal').classList.add('show');
-        console.log('📋 Modal öppnad för:', dateStr);
-    }
-
-    function closeBookingModal() {
-        document.getElementById('bookingModal').classList.remove('show');
-        selectedDateForBooking = null;
-    }
-
-    async function confirmBooking() {
-        if (!selectedDateForBooking) {
-            console.warn('⚠️ Ingen dag vald');
-            return;
-        }
-
-        const name = document.getElementById('modalName').value.trim();
-        const persons = parseInt(document.getElementById('modalPersons').value);
-
-        if (!name) {
-            alert('Var snäll och skriv in ditt namn!');
-            return;
-        }
-
-        const newBooking = {
-            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-            name: name,
-            start_date: selectedDateForBooking,
-            end_date: selectedDateForBooking,
-            persons: persons
-        };
-
-        console.log('📤 Försöker boka:', newBooking);
-
-        const { data, error } = await supabaseClient
-            .from('bookings')
-            .insert([newBooking])
-            .select();
-
-        if (error) {
-            console.error('❌ Fel vid bokning:', error);
-            alert('Kunde inte boka. Fel: ' + error.message);
-        } else {
-            console.log('✅ Bokning lyckades:', data);
-            allBookings.push(newBooking);
-            closeBookingModal();
-            renderBookings();
-            renderAllBookings();
-            
-            const personsText = persons >= 7 ? '🌟 Större Sällskap (7+)' : `${persons} personer`;
-            alert(`✅ Tack ${name}! Du har bokat ${selectedDateForBooking} med ${personsText}.`);
-        }
-    }
-
-    // ============================================================
-    // ÅTERSTÄLL CHECKLISTA
-    // ============================================================
-    document.getElementById('resetChecklistBtn').addEventListener('click', async function() {
-        if (confirm('Återställ alla checkboxar? (alla blir obockade)')) {
-            for (const item of checklistItems) {
-                if (item.done) {
-                    const { error } = await supabaseClient
-                        .from('checklist')
-                        .update({ done: false })
-                        .eq('id', item.id);
-                    if (error) console.error(error);
-                }
-            }
-            checklistItems.forEach(item => item.done = false);
-            renderChecklist();
-        }
+                <button class="btn-danger" onclick="deleteBooking('${b.id}')">🗑️ Avboka</button>
+            </div>
+        </div>`;
     });
 
-    // ============================================================
-    // FLIKNAVIGERING
-    // ============================================================
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    container.innerHTML = html;
+}
 
-            this.classList.add('active');
-            const pageId = this.dataset.page;
-            document.getElementById(pageId).classList.add('active');
+// ── save booking ──────────────────────────────────────────────
+async function saveBooking() {
+    const name    = document.getElementById('fName').value.trim();
+    const from    = document.getElementById('fFrom').value;
+    const to      = document.getElementById('fTo').value;
+    const persons = parseInt(document.getElementById('fPersons').value);
+    const note    = document.getElementById('fNote').value.trim();
 
-            if (pageId === 'page-booking') renderBookings();
-            if (pageId === 'page-checklist') renderChecklist();
-            if (pageId === 'page-mine') renderAllBookings();
-        });
-    });
+    let valid = true;
+    if (!name) {
+        document.getElementById('errName').style.display = 'block';
+        document.getElementById('fName').classList.add('error');
+        valid = false;
+    } else {
+        document.getElementById('errName').style.display = 'none';
+        document.getElementById('fName').classList.remove('error');
+    }
+    if (!from) {
+        document.getElementById('errFrom').style.display = 'block';
+        valid = false;
+    } else {
+        document.getElementById('errFrom').style.display = 'none';
+    }
+    if (!to || to < from) {
+        document.getElementById('errTo').style.display = 'block';
+        valid = false;
+    } else {
+        document.getElementById('errTo').style.display = 'none';
+    }
+    if (!valid) return;
 
-    // ============================================================
-    // MODAL EVENTS
-    // ============================================================
-    document.getElementById('modalCancel').addEventListener('click', closeBookingModal);
-    document.getElementById('modalConfirm').addEventListener('click', confirmBooking);
-    document.getElementById('bookingModal').addEventListener('click', function(e) {
-        if (e.target === this) closeBookingModal();
-    });
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Sparar...';
 
-    // ============================================================
-    // LADDA ALL DATA VID START
-    // ============================================================
-    async function loadAllData() {
-        try {
-            const [bookings, checklist] = await Promise.all([
-                fetchBookings(),
-                fetchChecklist()
-            ]);
-            allBookings = bookings;
-            checklistItems = checklist;
+    const newBooking = {
+        id: Date.now().toString(36) + Math.random().toString(36).substr(2,5),
+        name, start_date: from, end_date: to, persons, note
+    };
 
-            renderBookings();
-            renderChecklist();
-            renderAllBookings();
-        } catch (error) {
-            console.error('Fel vid laddning av data:', error);
-            document.getElementById('bookingList').innerHTML = `
-                <div class="empty-state">
-                    <span>❌</span>
-                    <p>Kunde inte ladda data.</p>
-                    <p class="small-note">Kontrollera din internetanslutning och Supabase-inställningar.</p>
-                </div>
-            `;
-        }
+    const { data, error } = await sb.from('bookings').insert([newBooking]).select();
+    if (error) {
+        alert('Kunde inte spara bokning: ' + error.message);
+        btn.disabled = false;
+        btn.textContent = '✅ Spara bokning';
+        return;
     }
 
-    loadAllData();
+    allBookings.push(newBooking);
+    allBookings.sort((a,b) => a.start_date.localeCompare(b.start_date));
 
-    console.log('🏡 Skagene Stugboken med Supabase är laddad!');
-    console.log('🌟 Större Sällskap (7+) är nu tillgängligt!');
+    ['fName','fFrom','fTo','fNote'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fPersons').value = '2';
+    btn.disabled = false;
+    btn.textContent = '✅ Spara bokning';
+
+    const banner = document.getElementById('successBanner');
+    banner.style.display = 'block';
+    setTimeout(() => banner.style.display = 'none', 4000);
+}
+
+// ── delete booking ────────────────────────────────────────────
+async function deleteBooking(id) {
+    if (!confirm('Är du säker på att du vill avboka?')) return;
+    const { error } = await sb.from('bookings').delete().eq('id', id);
+    if (error) { alert('Kunde inte avboka: ' + error.message); return; }
+    allBookings = allBookings.filter(b => b.id !== id);
+    renderBookings();
+}
+
+// ── checklist ─────────────────────────────────────────────────
+function renderChecklist() {
+    const container = document.getElementById('checklistContainer');
+    const done  = checklistItems.filter(i => i.done).length;
+    const total = checklistItems.length;
+
+    if (!total) {
+        container.innerHTML = `<div class="empty-state"><span>📋</span><p>Inga checklistpunkter.</p></div>`;
+        return;
+    }
+
+    container.innerHTML = checklistItems.map(item => `
+        <div class="checklist-item ${item.done ? 'done' : ''}">
+            <input type="checkbox" ${item.done ? 'checked' : ''} data-id="${item.id}">
+            <label>${item.text}</label>
+        </div>`).join('');
+
+    document.getElementById('checklistProgress').style.width = (done / total * 100) + '%';
+    document.getElementById('checklistStats').textContent = `${done} / ${total} klara`;
+
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', async function() {
+            const id = parseInt(this.dataset.id);
+            const checked = this.checked;
+            const item = checklistItems.find(i => i.id === id);
+            if (item) { item.done = checked; renderChecklist(); }
+            const { error } = await sb.from('checklist').update({ done: checked }).eq('id', id);
+            if (error && item) { item.done = !checked; renderChecklist(); alert('Kunde inte spara.'); }
+        });
+    });
+}
+
+document.getElementById('resetChecklistBtn').addEventListener('click', async () => {
+    if (!confirm('Återställ alla checkboxar?')) return;
+    for (const item of checklistItems) {
+        if (item.done) await sb.from('checklist').update({ done: false }).eq('id', item.id);
+    }
+    checklistItems.forEach(i => i.done = false);
+    renderChecklist();
+});
+
+// ── tabs ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.dataset.page).classList.add('active');
+    });
+});
+
+// ── init ──────────────────────────────────────────────────────
+async function init() {
+    const [bookings, checklist] = await Promise.all([fetchBookings(), fetchChecklist()]);
+    allBookings    = bookings;
+    checklistItems = checklist;
+    renderBookings();
+    renderChecklist();
+}
+init();
 </script>
 </body>
 </html>
