@@ -30,11 +30,29 @@
         }
         .app-header h1 { font-size: 22px; font-weight: 600; }
         .app-header p { font-size: 14px; opacity: 0.85; margin-top: 2px; }
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .user-info .user-name { font-size: 14px; font-weight: 500; }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
         .tab-bar {
             display: flex;
             border-bottom: 1px solid #c8d6c8;
             position: sticky;
-            top: 78px;
+            top: 0;
             z-index: 9;
             background: #f0f4f0;
         }
@@ -58,6 +76,82 @@
         .tab-btn i { display: block; font-size: 20px; font-style: normal; margin-bottom: 2px; }
         .page { display: none; padding: 16px 16px 30px 16px; background: white; }
         .page.active { display: block; }
+
+        /* Login Page */
+        .login-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 70vh;
+            padding: 30px 20px;
+        }
+        .login-box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2ece2;
+        }
+        .login-box h2 {
+            color: #1e3d1e;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+        .login-box .subtitle {
+            color: #6d8a6d;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        .login-box .input-group {
+            margin-bottom: 16px;
+        }
+        .login-box .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #2d4a2d;
+        }
+        .login-box .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c8dcc8;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .login-box .input-group input:focus {
+            outline: 2px solid #2d5a2d;
+            border-color: transparent;
+        }
+        .login-btn {
+            background: #2d5a2d;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .login-btn:active { background: #1a3d1a; }
+        .login-error {
+            color: #b33c3c;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        .demo-users {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f0f7f0;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #4d6a4d;
+        }
+        .demo-users strong { color: #1e3d1e; }
 
         /* Date group card */
         .date-group {
@@ -95,6 +189,19 @@
             background: #f0f7f0;
             padding: 5px 10px;
             border-radius: 8px;
+        }
+        .booking-entry .guest-badge {
+            background: #e8f0e8;
+            color: #2d5a2d;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .booking-entry .my-booking {
+            background: #2d5a2d;
+            color: white;
         }
         .btn-danger {
             background: #b33c3c;
@@ -267,6 +374,34 @@
         .btn-cancel { background: #e8ece8; color: #3d5a3d; }
         .btn-confirm { background: #2d5a2d; color: white; }
 
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin: 10px 0;
+        }
+        .calendar-grid .day {
+            padding: 4px;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 4px;
+            background: #f8faf8;
+        }
+        .calendar-grid .day.booked {
+            background: #2d5a2d;
+            color: white;
+        }
+        .calendar-grid .day.booked-other {
+            background: #d4a843;
+            color: white;
+        }
+        .calendar-grid .day.today {
+            border: 2px solid #2d5a2d;
+        }
+        .calendar-grid .day.weekend {
+            color: #b33c3c;
+        }
+
         @media (min-width: 600px) {
             .app-container { border-radius: 16px; margin-top: 20px; margin-bottom: 20px; min-height: auto; }
             body { background: #d8e4d8; padding-bottom: 20px; }
@@ -274,122 +409,168 @@
     </style>
 </head>
 <body>
-<div class="app-container">
+<div class="app-container" id="app">
 
-    <header class="app-header">
-        <h1>🏡 Skagene Stugan</h1>
-        <p>Västra Skagene · Värmland</p>
-    </header>
-
-    <div class="tab-bar">
-        <button class="tab-btn active" data-page="page-booking"><i>📅</i> Bokningar</button>
-        <button class="tab-btn" data-page="page-new"><i>➕</i> Ny bokning</button>
-        <button class="tab-btn" data-page="page-instructions"><i>📖</i> Instruktioner</button>
-        <button class="tab-btn" data-page="page-checklist"><i>✅</i> Checklista</button>
-    </div>
-
-    <!-- BOKNINGAR -->
-    <div id="page-booking" class="page active">
-        <div class="highlight-box">
-            ⚠️ <strong>Kom ihåg:</strong> Avboka i god tid om ni inte kan komma!
-        </div>
-        <div id="bookingList"><div class="loading-spinner">⏳ Laddar bokningar...</div></div>
-    </div>
-
-    <!-- NY BOKNING -->
-    <div id="page-new" class="page">
-        <div id="successBanner" class="success-banner">✅ Bokning sparad! Du hittar den under "Bokningar".</div>
-        <div class="card">
-            <div style="font-size:17px;font-weight:700;color:#1e3d1e;margin-bottom:14px;">📝 Ny bokning</div>
-
-            <div class="input-group">
-                <label for="fName">Ditt namn <span style="color:#b33c3c;">*</span></label>
-                <input type="text" id="fName" placeholder="t.ex. Kalle Karlsson" autocomplete="name">
-                <div class="field-error" id="errName">⚠️ Namn måste fyllas i.</div>
-            </div>
-
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="page active">
+        <div class="login-page">
+            <div class="login-box">
+                <h2>🏡 Skagene Stugan</h2>
+                <p class="subtitle">Logga in för att boka eller se bokningar</p>
+                
                 <div class="input-group">
-                    <label for="fFrom">Ankomst <span style="color:#b33c3c;">*</span></label>
-                    <input type="date" id="fFrom">
-                    <div class="field-error" id="errFrom">⚠️ Välj datum.</div>
+                    <label for="loginName">Ditt namn</label>
+                    <input type="text" id="loginName" placeholder="t.ex. Kalle Karlsson">
                 </div>
                 <div class="input-group">
-                    <label for="fTo">Avresa <span style="color:#b33c3c;">*</span></label>
-                    <input type="date" id="fTo">
-                    <div class="field-error" id="errTo">⚠️ Välj datum.</div>
+                    <label for="loginPassword">Lösenord</label>
+                    <input type="password" id="loginPassword" placeholder="Ange lösenord">
+                </div>
+                
+                <button class="login-btn" onclick="login()">🔑 Logga in</button>
+                <div class="login-error" id="loginError">❌ Fel namn eller lösenord</div>
+                
+                <div class="demo-users">
+                    <strong>👥 Befintliga användare:</strong><br>
+                    • Kalle Karlsson (lösen: kalle123)<br>
+                    • Anna Andersson (lösen: anna456)<br>
+                    • Erik Eriksson (lösen: erik789)<br>
+                    <span style="font-size:12px;color:#6d8a6d;">Använd dessa för att testa</span>
                 </div>
             </div>
-
-            <div class="input-group">
-                <label for="fPersons">Antal personer</label>
-                <select id="fPersons">
-                    <option value="1">1 person</option>
-                    <option value="2" selected>2 personer</option>
-                    <option value="3">3 personer</option>
-                    <option value="4">4 personer</option>
-                    <option value="5">5 personer</option>
-                    <option value="6">6 personer</option>
-                    <option value="7">🌟 Större sällskap (7+)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="fNote">Anteckning (valfri)</label>
-                <textarea id="fNote" rows="3" placeholder="T.ex. firar midsommar, tar med hunden, behöver hjälp med ved..."></textarea>
-            </div>
-
-            <button class="btn-book" id="saveBtn" onclick="saveBooking()">✅ Spara bokning</button>
         </div>
     </div>
 
-    <!-- INSTRUKTIONER -->
-    <div id="page-instructions" class="page">
-        <h3 style="margin-bottom:12px;">📖 Praktiska instruktioner</h3>
-        <div class="card" style="background:#f0f7f0;">
-            <div class="instruction-section">
-                <h4>💧 Vatten & Ström</h4>
-                <div class="step"><strong>1.</strong> Vattnet sätts på automatiskt när huvudströmmen slås på, det finns en stickpropp på baksidan av storstugan som går till pumpen, denna kan vara urdragen och då statar inte umpen, vrid <strong>medurs</strong> för att öppna.</div>
-                <div class="step"><strong>2.</strong> Elpåslaget sitter bakom Lillstugan. Huvudbrytare = Blå knapp.</div>
-                <div class="step"><strong>3.</strong> Varmvattenberedaren slås på i dushrummet: Brytaren sitter vid varmvattenberedaren.</div>
+    <!-- MAIN APP (hidden until login) -->
+    <div id="mainApp" style="display:none;">
+        <header class="app-header">
+            <h1>🏡 Skagene Stugan</h1>
+            <p>Västra Skagene · Värmland</p>
+            <div class="user-info">
+                <span class="user-name" id="currentUserDisplay">👤 Inloggad</span>
+                <button class="logout-btn" onclick="logout()">🚪 Logga ut</button>
             </div>
-            <div class="instruction-section">
-                <h4>❄️ Kyl & Frys</h4>
-                <div class="step"><strong>1.</strong> Kylskåpet: ställ in på 4°C (mittenläget, 3,5).</div>
-                <div class="step"><strong>2.</strong> Frys: -18°C. Frosta av om det blir mer än 5 mm is.</div>
-                <div class="step"><strong>3.</strong> Kom ihåg att stänga dörrarna ordentligt!</div>
+        </header>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" data-page="page-booking"><i>📅</i> Bokningar</button>
+            <button class="tab-btn" data-page="page-new"><i>➕</i> Ny bokning</button>
+            <button class="tab-btn" data-page="page-calendar"><i>📆</i> Kalender</button>
+            <button class="tab-btn" data-page="page-instructions"><i>📖</i> Instruktioner</button>
+            <button class="tab-btn" data-page="page-checklist"><i>✅</i> Checklista</button>
+        </div>
+
+        <!-- BOKNINGAR -->
+        <div id="page-booking" class="page active">
+            <div class="highlight-box">
+                👋 <span id="greetingMsg">Välkommen! Här ser du alla bokningar.</span>
             </div>
-            <div class="instruction-section">
-                <h4>🔥 Kaminen</h4>
-                <div class="step"><strong>1.</strong> Använd <strong>endast torr ved</strong> (finns i skyddet nere vid sjöboden).</div>
-                <div class="step"><strong>2.</strong> Öppna spjället helt innan du tänder.</div>
-                <div class="step"><strong>3.</strong> Stäng spjället till hälften när brasan brinner bra.</div>
-                <div class="step"><strong>4.</strong> Glöm inte att stänga spjället helt när du går ut.</div>
-                <div class="step"><strong>5.</strong> Elda med omsorg, max 1,5 kg ved i timmen.</div>
-            </div>
-            <div class="instruction-section" style="margin-bottom:0">
-                <h4>🗑️ Sopor</h4>
-                <div class="step"><strong>1.</strong> Alla sopor tas med hem, det finns ingen soptunna som töms.</div>
-                <div class="step"><strong>2.</strong> Gäller all typ av avfall eller pant — allt tas med hem.</div>
+            <div id="bookingList"><div class="loading-spinner">⏳ Laddar bokningar...</div></div>
+        </div>
+
+        <!-- NY BOKNING -->
+        <div id="page-new" class="page">
+            <div id="successBanner" class="success-banner">✅ Bokning sparad! Du hittar den under "Bokningar".</div>
+            <div class="card">
+                <div style="font-size:17px;font-weight:700;color:#1e3d1e;margin-bottom:14px;">📝 Ny bokning</div>
+
+                <div class="input-group">
+                    <label for="fName">Ditt namn <span style="color:#b33c3c;">*</span></label>
+                    <input type="text" id="fName" placeholder="t.ex. Kalle Karlsson" autocomplete="name">
+                    <div class="field-error" id="errName">⚠️ Namn måste fyllas i.</div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="input-group">
+                        <label for="fFrom">Ankomst <span style="color:#b33c3c;">*</span></label>
+                        <input type="date" id="fFrom">
+                        <div class="field-error" id="errFrom">⚠️ Välj datum.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="fTo">Avresa <span style="color:#b33c3c;">*</span></label>
+                        <input type="date" id="fTo">
+                        <div class="field-error" id="errTo">⚠️ Välj datum.</div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="fPersons">Antal personer</label>
+                    <select id="fPersons">
+                        <option value="1">1 person</option>
+                        <option value="2" selected>2 personer</option>
+                        <option value="3">3 personer</option>
+                        <option value="4">4 personer</option>
+                        <option value="5">5 personer</option>
+                        <option value="6">6 personer</option>
+                        <option value="7">🌟 Större sällskap (7+)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="fNote">Anteckning (valfri)</label>
+                    <textarea id="fNote" rows="3" placeholder="T.ex. firar midsommar, tar med hunden, behöver hjälp med ved..."></textarea>
+                </div>
+
+                <button class="btn-book" id="saveBtn" onclick="saveBooking()">✅ Spara bokning</button>
             </div>
         </div>
-        <div class="card" style="background:#f0f7f0;">
-            <p style="font-size:14px;"><strong>📞 Kontakt vid akuta problem:</strong><br>Ola: 070-633 38 76<br>Ring eller messa.</p>
+
+        <!-- KALENDER -->
+        <div id="page-calendar" class="page">
+            <h3 style="margin-bottom:12px;">📆 Översikt över bokningar</h3>
+            <div class="highlight-box">
+                🟢 <strong>Grön</strong> = Din bokning &nbsp;|&nbsp; 🟡 <strong>Gul</strong> = Andras bokning
+            </div>
+            <div id="calendarView"><div class="loading-spinner">⏳ Laddar kalender...</div></div>
+        </div>
+
+        <!-- INSTRUKTIONER -->
+        <div id="page-instructions" class="page">
+            <h3 style="margin-bottom:12px;">📖 Praktiska instruktioner</h3>
+            <div class="card" style="background:#f0f7f0;">
+                <div class="instruction-section">
+                    <h4>💧 Vatten & Ström</h4>
+                    <div class="step"><strong>1.</strong> Vattnet sätts på automatiskt när huvudströmmen slås på, det finns en stickpropp på baksidan av storstugan som går till pumpen, denna kan vara urdragen och då startar inte pumpen, vrid <strong>medurs</strong> för att öppna.</div>
+                    <div class="step"><strong>2.</strong> Elpåslaget sitter bakom Lillstugan. Huvudbrytare = Blå knapp.</div>
+                    <div class="step"><strong>3.</strong> Varmvattenberedaren slås på i dushrummet: Brytaren sitter vid varmvattenberedaren.</div>
+                </div>
+                <div class="instruction-section">
+                    <h4>❄️ Kyl & Frys</h4>
+                    <div class="step"><strong>1.</strong> Kylskåpet: ställ in på 4°C (mittenläget, 3,5).</div>
+                    <div class="step"><strong>2.</strong> Frys: -18°C. Frosta av om det blir mer än 5 mm is.</div>
+                    <div class="step"><strong>3.</strong> Kom ihåg att stänga dörrarna ordentligt!</div>
+                </div>
+                <div class="instruction-section">
+                    <h4>🔥 Kaminen</h4>
+                    <div class="step"><strong>1.</strong> Använd <strong>endast torr ved</strong> (finns i skyddet nere vid sjöboden).</div>
+                    <div class="step"><strong>2.</strong> Öppna spjället helt innan du tänder.</div>
+                    <div class="step"><strong>3.</strong> Stäng spjället till hälften när brasan brinner bra.</div>
+                    <div class="step"><strong>4.</strong> Glöm inte att stänga spjället helt när du går ut.</div>
+                    <div class="step"><strong>5.</strong> Elda med omsorg, max 1,5 kg ved i timmen.</div>
+                </div>
+                <div class="instruction-section" style="margin-bottom:0">
+                    <h4>🗑️ Sopor</h4>
+                    <div class="step"><strong>1.</strong> Alla sopor tas med hem, det finns ingen soptunna som töms.</div>
+                    <div class="step"><strong>2.</strong> Gäller all typ av avfall eller pant — allt tas med hem.</div>
+                </div>
+            </div>
+            <div class="card" style="background:#f0f7f0;">
+                <p style="font-size:14px;"><strong>📞 Kontakt vid akuta problem:</strong><br>Ola: 070-633 38 76<br>Ring eller messa.</p>
+            </div>
+        </div>
+
+        <!-- CHECKLISTA -->
+        <div id="page-checklist" class="page">
+            <h3 style="margin-bottom:4px;">✅ Utcheckningslista</h3>
+            <p class="small-note" style="margin-bottom:12px;">Bocka i allt innan ni låser och åker hem.</p>
+            <div class="checklist-progress">
+                <div class="checklist-progress-fill" id="checklistProgress"></div>
+            </div>
+            <div class="checklist-stats" id="checklistStats">0 / 0 klara</div>
+            <div id="checklistContainer"><div class="loading-spinner">⏳ Laddar checklista...</div></div>
+            <button class="btn-book" id="resetChecklistBtn" style="margin-top:16px;background:#6d8a6d;">🔄 Återställ checklista</button>
         </div>
     </div>
-
-    <!-- CHECKLISTA -->
-    <div id="page-checklist" class="page">
-        <h3 style="margin-bottom:4px;">✅ Utcheckningslista</h3>
-        <p class="small-note" style="margin-bottom:12px;">Bocka i allt innan ni låser och åker hem.</p>
-        <div class="checklist-progress">
-            <div class="checklist-progress-fill" id="checklistProgress"></div>
-        </div>
-        <div class="checklist-stats" id="checklistStats">0 / 0 klara</div>
-        <div id="checklistContainer"><div class="loading-spinner">⏳ Laddar checklista...</div></div>
-        <button class="btn-book" id="resetChecklistBtn" style="margin-top:16px;background:#6d8a6d;">🔄 Återställ checklista</button>
-    </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -398,8 +579,60 @@ const SUPABASE_URL  = 'https://sxubfqonrxiphklkpqxd.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_a5jYOx-HOflN7-RKtDUMZQ_EYWT6a9b';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let allBookings   = [];
+// ── Users Database ────────────────────────────────────────────
+// In real app, this should be in Supabase with proper auth
+// This is a demo version with hardcoded users
+const USERS = [
+    { name: 'Kalle Karlsson', password: 'kalle123' },
+    { name: 'Anna Andersson', password: 'anna456' },
+    { name: 'Erik Eriksson', password: 'erik789' }
+];
+
+let currentUser = null;
+let allBookings = [];
 let checklistItems = [];
+
+// ── Authentication ─────────────────────────────────────────────
+function login() {
+    const name = document.getElementById('loginName').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const errorEl = document.getElementById('loginError');
+    
+    const user = USERS.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === password);
+    
+    if (!user) {
+        errorEl.style.display = 'block';
+        return;
+    }
+    
+    errorEl.style.display = 'none';
+    currentUser = user.name;
+    
+    // Show main app
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    document.getElementById('currentUserDisplay').textContent = '👤 ' + currentUser;
+    document.getElementById('fName').value = currentUser;
+    document.getElementById('greetingMsg').textContent = 'Hej ' + currentUser + '! Här ser du alla bokningar.';
+    
+    init();
+}
+
+function logout() {
+    currentUser = null;
+    document.getElementById('loginPage').style.display = 'block';
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginName').value = '';
+    document.getElementById('loginPassword').value = '';
+}
+
+// Enter key for login
+document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') login();
+});
+document.getElementById('loginName').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') login();
+});
 
 // ── helpers ──────────────────────────────────────────────────
 function fmtDate(d) {
@@ -437,46 +670,150 @@ function renderBookings() {
         return;
     }
 
-    const sorted = [...allBookings].sort((a,b) => a.start_date.localeCompare(b.start_date));
+    // Group by date
+    const grouped = {};
+    allBookings.forEach(b => {
+        const key = b.start_date + '|' + b.end_date;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(b);
+    });
 
     let html = '';
-    sorted.forEach(b => {
-        const nights = nightsBetween(b.start_date, b.end_date);
+    const sortedGroups = Object.keys(grouped).sort();
+    
+    sortedGroups.forEach(key => {
+        const bookings = grouped[key];
+        const first = bookings[0];
+        const nights = nightsBetween(first.start_date, first.end_date);
         const nightsStr = nights === 0 ? 'endagsbesök' : `${nights} natt${nights > 1 ? 'er' : ''}`;
-        const persons = b.persons >= 7 ? '🌟 Större sällskap (7+)' : `${b.persons} pers.`;
         const today = new Date().toISOString().split('T')[0];
-        const isActive = b.start_date <= today && b.end_date >= today;
-        const isPast   = b.end_date < today;
-
+        const isActive = first.start_date <= today && first.end_date >= today;
+        const isPast = first.end_date < today;
+        
+        // Count people
+        const totalPeople = bookings.reduce((sum, b) => sum + (b.persons >= 7 ? 7 : b.persons), 0);
+        const peopleStr = totalPeople >= 7 ? '🌟 Större sällskap' : `${totalPeople} pers. totalt`;
+        
         html += `
         <div class="date-group" style="opacity:${isPast ? '0.6' : '1'}">
             <div class="date-group-header" style="background:${isPast ? '#6d8a6d' : isActive ? '#1e3d1e' : '#2d5a2d'}">
                 <div>
-                    <div class="date-label">📅 ${fmtShort(b.start_date)}${b.start_date !== b.end_date ? ' – ' + fmtShort(b.end_date) : ''}</div>
-                    <div class="date-meta">${nightsStr} · ${isPast ? 'Avslutad' : isActive ? '🟢 Pågår nu' : 'Kommande'}</div>
+                    <div class="date-label">📅 ${fmtShort(first.start_date)}${first.start_date !== first.end_date ? ' – ' + fmtShort(first.end_date) : ''}</div>
+                    <div class="date-meta">${nightsStr} · ${bookings.length} bokning${bookings.length > 1 ? 'ar' : ''} · ${peopleStr} · ${isPast ? 'Avslutad' : isActive ? '🟢 Pågår nu' : 'Kommande'}</div>
                 </div>
-            </div>
-            <div class="booking-entry">
+            </div>`;
+        
+        bookings.forEach(b => {
+            const isMine = b.name === currentUser;
+            html += `
+            <div class="booking-entry" style="background:${isMine ? '#f4faf4' : 'white'}">
                 <div class="booking-entry-info">
-                    <div class="booker-name">👤 ${b.name}</div>
-                    <div class="booker-meta">👥 ${persons}</div>
+                    <div class="booker-name">👤 ${b.name} ${isMine ? '⭐' : ''}</div>
+                    <div class="booker-meta">👥 ${b.persons >= 7 ? '🌟 Större sällskap (7+)' : b.persons + ' pers.'}</div>
                     ${b.note ? `<div class="booker-note">💬 ${b.note}</div>` : ''}
                 </div>
-                <button class="btn-danger" onclick="deleteBooking('${b.id}')">🗑️ Avboka</button>
-            </div>
-        </div>`;
+                <div>
+                    ${isMine ? `<button class="btn-danger" onclick="deleteBooking('${b.id}')">🗑️ Avboka</button>` : 
+                    `<span class="guest-badge">Gäst</span>`}
+                </div>
+            </div>`;
+        });
+        
+        html += `</div>`;
     });
 
     container.innerHTML = html;
 }
 
+// ── render calendar ───────────────────────────────────────────
+function renderCalendar() {
+    const container = document.getElementById('calendarView');
+    if (!allBookings.length) {
+        container.innerHTML = `<div class="empty-state"><span>📆</span><p>Inga bokningar att visa i kalendern.</p></div>`;
+        return;
+    }
+
+    // Get all dates with bookings
+    const bookedDates = {};
+    allBookings.forEach(b => {
+        let current = new Date(b.start_date);
+        const end = new Date(b.end_date);
+        while (current <= end) {
+            const dateStr = current.toISOString().split('T')[0];
+            if (!bookedDates[dateStr]) bookedDates[dateStr] = [];
+            bookedDates[dateStr].push(b.name);
+            current.setDate(current.getDate() + 1);
+        }
+    });
+
+    // Get today and show current month
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+
+    let html = `<h4 style="margin:10px 0;">${new Date(year, month).toLocaleString('sv', { month: 'long' })} ${year}</h4>`;
+    html += `<div class="calendar-grid">`;
+    
+    // Weekday headers
+    const weekdays = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
+    weekdays.forEach(day => {
+        html += `<div class="day" style="font-weight:700;background:#e8f0e8;">${day}</div>`;
+    });
+
+    // Empty cells before first day
+    let startOffset = firstDay.getDay() - 1;
+    if (startOffset < 0) startOffset = 6;
+    
+    for (let i = 0; i < startOffset; i++) {
+        html += `<div class="day"></div>`;
+    }
+
+    // Days
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateObj = new Date(year, month, d);
+        const dateStr = dateObj.toISOString().split('T')[0];
+        const isToday = dateObj.toDateString() === today.toDateString();
+        const isWeekend = dateObj.getDay() === 6 || dateObj.getDay() === 0;
+        const bookings = bookedDates[dateStr] || [];
+        
+        let classes = 'day';
+        if (isToday) classes += ' today';
+        if (isWeekend) classes += ' weekend';
+        if (bookings.length > 0) {
+            const allMine = bookings.every(name => name === currentUser);
+            classes += allMine ? ' booked' : ' booked-other';
+        }
+        
+        let label = d;
+        if (bookings.length > 0) {
+            const names = bookings.join(', ');
+            label += `<br><span style="font-size:8px;">${names}</span>`;
+        }
+        
+        html += `<div class="${classes}">${label}</div>`;
+    }
+
+    html += `</div>`;
+    html += `<p class="small-note" style="margin-top:8px;">🟢 Grön = Din bokning &nbsp;|&nbsp; 🟡 Gul = Andras bokning</p>`;
+    
+    container.innerHTML = html;
+}
+
 // ── save booking ──────────────────────────────────────────────
 async function saveBooking() {
-    const name    = document.getElementById('fName').value.trim();
-    const from    = document.getElementById('fFrom').value;
-    const to      = document.getElementById('fTo').value;
+    if (!currentUser) {
+        alert('Du måste vara inloggad för att boka!');
+        return;
+    }
+
+    const name = document.getElementById('fName').value.trim();
+    const from = document.getElementById('fFrom').value;
+    const to = document.getElementById('fTo').value;
     const persons = parseInt(document.getElementById('fPersons').value);
-    const note    = document.getElementById('fNote').value.trim();
+    const note = document.getElementById('fNote').value.trim();
 
     let valid = true;
     if (!name) {
@@ -521,7 +858,9 @@ async function saveBooking() {
     allBookings.push(newBooking);
     allBookings.sort((a,b) => a.start_date.localeCompare(b.start_date));
 
-    ['fName','fFrom','fTo','fNote'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fFrom').value = '';
+    document.getElementById('fTo').value = '';
+    document.getElementById('fNote').value = '';
     document.getElementById('fPersons').value = '2';
     btn.disabled = false;
     btn.textContent = '✅ Spara bokning';
@@ -529,6 +868,9 @@ async function saveBooking() {
     const banner = document.getElementById('successBanner');
     banner.style.display = 'block';
     setTimeout(() => banner.style.display = 'none', 4000);
+    
+    renderBookings();
+    renderCalendar();
 }
 
 // ── delete booking ────────────────────────────────────────────
@@ -538,12 +880,13 @@ async function deleteBooking(id) {
     if (error) { alert('Kunde inte avboka: ' + error.message); return; }
     allBookings = allBookings.filter(b => b.id !== id);
     renderBookings();
+    renderCalendar();
 }
 
 // ── checklist ─────────────────────────────────────────────────
 function renderChecklist() {
     const container = document.getElementById('checklistContainer');
-    const done  = checklistItems.filter(i => i.done).length;
+    const done = checklistItems.filter(i => i.done).length;
     const total = checklistItems.length;
 
     if (!total) {
@@ -594,12 +937,15 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // ── init ──────────────────────────────────────────────────────
 async function init() {
     const [bookings, checklist] = await Promise.all([fetchBookings(), fetchChecklist()]);
-    allBookings    = bookings;
+    allBookings = bookings;
     checklistItems = checklist;
     renderBookings();
+    renderCalendar();
     renderChecklist();
 }
-init();
+
+// Check if already logged in (for page refresh)
+// Auto-login is disabled for security
 </script>
 </body>
 </html>
