@@ -78,19 +78,22 @@
             top: 0;
             z-index: 9;
             background: #f0f4f0;
+            overflow-x: auto;
         }
 
         .tab-btn {
             flex: 1;
+            min-width: 60px;
             padding: 12px 4px;
             border: none;
             background: transparent;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #3d5a3d;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             text-align: center;
+            white-space: nowrap;
         }
 
         .tab-btn.active {
@@ -639,6 +642,96 @@
             background: #b33c3c;
         }
 
+        /* User List */
+        .user-list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            border-bottom: 1px solid #e8f0e8;
+            gap: 12px;
+        }
+
+        .user-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-list-item .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2d5a2d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .user-list-item .user-info {
+            flex: 1;
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .user-list-item .user-info .name {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1e3d1e;
+        }
+
+        .user-list-item .user-info .phone {
+            font-size: 13px;
+            color: #4d6a4d;
+        }
+
+        .user-list-item .user-info .email {
+            font-size: 12px;
+            color: #6d8a6d;
+        }
+
+        .user-list-item .user-badge {
+            background: #e8f0e8;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #2d5a2d;
+        }
+
+        .user-list-item .user-badge.self {
+            background: #2d5a2d;
+            color: white;
+        }
+
+        /* User stats */
+        .user-stats {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f0f7f0;
+            border-radius: 12px;
+        }
+
+        .user-stats .stat {
+            text-align: center;
+        }
+
+        .user-stats .stat .number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e3d1e;
+        }
+
+        .user-stats .stat .label {
+            font-size: 12px;
+            color: #4d6a4d;
+        }
+
         @media (min-width: 600px) {
             .app-container {
                 border-radius: 16px;
@@ -685,11 +778,15 @@
                     <!-- SIGNUP FORM -->
                     <div id="signupForm" style="display:none;">
                         <div class="input-group">
-                            <label for="signupName">Ditt namn</label>
+                            <label for="signupName">Ditt namn <span style="color:#b33c3c;">*</span></label>
                             <input type="text" id="signupName" placeholder="t.ex. Kalle Karlsson">
                         </div>
                         <div class="input-group">
-                            <label for="signupPassword">Välj lösenord (minst 6 tecken)</label>
+                            <label for="signupPhone">Telefonnummer <span style="color:#b33c3c;">*</span></label>
+                            <input type="tel" id="signupPhone" placeholder="t.ex. 070-123 45 67">
+                        </div>
+                        <div class="input-group">
+                            <label for="signupPassword">Välj lösenord <span style="color:#b33c3c;">*</span> (minst 6 tecken)</label>
                             <input type="password" id="signupPassword" placeholder="Välj ett säkert lösenord" oninput="checkPasswordStrength(this.value)">
                             <div class="password-strength">
                                 <div class="password-strength-bar" id="passwordStrengthBar"></div>
@@ -721,7 +818,8 @@
                 <button class="tab-btn active" data-page="page-booking"><i>📅</i> Bokningar</button>
                 <button class="tab-btn" data-page="page-new"><i>➕</i> Ny bokning</button>
                 <button class="tab-btn" data-page="page-calendar"><i>📆</i> Kalender</button>
-                <button class="tab-btn" data-page="page-instructions"><i>📖</i> Instruktioner</button>
+                <button class="tab-btn" data-page="page-users"><i>👥</i> Användare</button>
+                <button class="tab-btn" data-page="page-instructions"><i>📖</i> Info</button>
                 <button class="tab-btn" data-page="page-checklist"><i>✅</i> Checklista</button>
             </div>
 
@@ -807,6 +905,27 @@
                 </div>
             </div>
 
+            <!-- ANVÄNDARE -->
+            <div id="page-users" class="page">
+                <h3 style="margin-bottom:4px;">👥 Alla användare</h3>
+                <p class="small-note" style="margin-bottom:12px;">Här ser du alla som har konto i Stugboken</p>
+
+                <div class="user-stats" id="userStats">
+                    <div class="stat">
+                        <div class="number" id="totalUsers">0</div>
+                        <div class="label">Registrerade</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number" id="totalBookings">0</div>
+                        <div class="label">Bokningar</div>
+                    </div>
+                </div>
+
+                <div id="userList">
+                    <div class="loading-spinner">⏳ Laddar användare...</div>
+                </div>
+            </div>
+
             <!-- INSTRUKTIONER -->
             <div id="page-instructions" class="page">
                 <h3 style="margin-bottom:12px;">📖 Praktiska instruktioner</h3>
@@ -874,6 +993,7 @@
         let currentUserId = null;
         let allBookings = [];
         let checklistItems = [];
+        let allUsers = [];
 
         // ── CALENDAR STATE ──
         let calendarYear = new Date().getFullYear();
@@ -881,7 +1001,6 @@
 
         // ── SVENSKA HELGDAGAR ──
         function getSwedishHolidays(year) {
-            // Easter Sunday calculation (computus)
             function getEaster(year) {
                 const a = year % 19;
                 const b = Math.floor(year / 100);
@@ -903,18 +1022,33 @@
             const easter = getEaster(year);
             const easterDate = new Date(easter);
 
-            // Create a date helper
             function dateOffset(date, days) {
                 const d = new Date(date);
                 d.setDate(d.getDate() + days);
                 return d;
             }
 
-            function getDateStr(year, month, day) {
-                return new Date(year, month - 1, day).toISOString().split('T')[0];
+            function getMidsummerEve(year) {
+                const june20 = new Date(year, 5, 20);
+                let dayOfWeek = june20.getDay();
+                let daysToSaturday = (6 - dayOfWeek + 7) % 7;
+                return new Date(year, 5, 20 + daysToSaturday - 1);
             }
 
-            // Rörliga helgdagar baserade på påsk
+            function getAllSaintsDay(year) {
+                const oct31 = new Date(year, 9, 31);
+                let dayOfWeek = oct31.getDay();
+                let daysToSaturday = (6 - dayOfWeek + 7) % 7;
+                return new Date(year, 9, 31 + daysToSaturday);
+            }
+
+            const holidays = {};
+
+            function addHoliday(date, name) {
+                const key = date.toISOString().split('T')[0];
+                holidays[key] = name;
+            }
+
             const goodFriday = dateOffset(easterDate, -2);
             const easterSunday = dateOffset(easterDate, 0);
             const easterMonday = dateOffset(easterDate, 1);
@@ -923,31 +1057,6 @@
             const midsummerEve = getMidsummerEve(year);
             const midsummerDay = dateOffset(midsummerEve, 1);
             const allSaintsDay = getAllSaintsDay(year);
-
-            function getMidsummerEve(year) {
-                // Midsommar: lördagen mellan 20-26 juni
-                const june20 = new Date(year, 5, 20);
-                let dayOfWeek = june20.getDay();
-                let daysToSaturday = (6 - dayOfWeek + 7) % 7;
-                const midsummerEve = new Date(year, 5, 20 + daysToSaturday - 1);
-                return midsummerEve;
-            }
-
-            function getAllSaintsDay(year) {
-                // Alla helgons dag: första lördagen efter 31 oktober
-                const oct31 = new Date(year, 9, 31);
-                let dayOfWeek = oct31.getDay();
-                let daysToSaturday = (6 - dayOfWeek + 7) % 7;
-                return new Date(year, 9, 31 + daysToSaturday);
-            }
-
-            // Fast datum
-            const holidays = {};
-
-            function addHoliday(date, name) {
-                const key = date.toISOString().split('T')[0];
-                holidays[key] = name;
-            }
 
             addHoliday(new Date(year, 0, 1), '🎉 Nyårsdagen');
             addHoliday(new Date(year, 0, 6), '🎉 Trettondedag jul');
@@ -1025,12 +1134,13 @@
 
         async function signupUser() {
             const name = document.getElementById('signupName').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
             const password = document.getElementById('signupPassword').value.trim();
             const errorEl = document.getElementById('signupError');
             const successEl = document.getElementById('signupSuccess');
 
-            if (!name || !password) {
-                errorEl.textContent = '❌ Fyll i både namn och lösenord';
+            if (!name || !phone || !password) {
+                errorEl.textContent = '❌ Fyll i alla fält (namn, telefon och lösenord)';
                 errorEl.style.display = 'block';
                 successEl.style.display = 'none';
                 return;
@@ -1053,7 +1163,10 @@
                     email: email,
                     password: password,
                     options: {
-                        data: { name: name }
+                        data: {
+                            name: name,
+                            phone: phone
+                        }
                     }
                 });
 
@@ -1067,10 +1180,27 @@
                     return;
                 }
 
+                // Spara telefonnummer i profilen
+                if (data.user) {
+                    const { error: profileError } = await sb
+                        .from('profiles')
+                        .upsert({
+                            id: data.user.id,
+                            name: name,
+                            phone: phone,
+                            updated_at: new Date().toISOString()
+                        });
+
+                    if (profileError) {
+                        console.error('Profile error:', profileError);
+                    }
+                }
+
                 successEl.textContent = '✅ Konto skapat för ' + name + '! Logga in nu.';
                 successEl.style.display = 'block';
 
                 document.getElementById('signupName').value = '';
+                document.getElementById('signupPhone').value = '';
                 document.getElementById('signupPassword').value = '';
                 document.getElementById('passwordStrengthBar').className = 'password-strength-bar';
 
@@ -1165,6 +1295,55 @@
             return data;
         }
 
+        async function fetchUsers() {
+            // Hämta alla användare från auth
+            const { data: users, error: usersError } = await sb.auth.admin.listUsers();
+
+            if (usersError) {
+                console.error('Fetch users error:', usersError);
+                // Fallback: hämta från profiles
+                const { data: profiles, error: profileError } = await sb
+                    .from('profiles')
+                    .select('*');
+
+                if (profileError) {
+                    console.error('Fetch profiles error:', profileError);
+                    return [];
+                }
+                return profiles || [];
+            }
+
+            // Kombinera med profiler
+            const { data: profiles, error: profileError } = await sb
+                .from('profiles')
+                .select('*');
+
+            if (profileError) {
+                console.error('Fetch profiles error:', profileError);
+                return users.users.map(u => ({
+                    id: u.id,
+                    name: u.user_metadata?.name || u.email?.split('@')[0] || 'Okänd',
+                    phone: u.user_metadata?.phone || 'Ej angivet',
+                    email: u.email,
+                    created_at: u.created_at
+                }));
+            }
+
+            // Kombinera data
+            const combinedUsers = users.users.map(u => {
+                const profile = profiles.find(p => p.id === u.id);
+                return {
+                    id: u.id,
+                    name: profile?.name || u.user_metadata?.name || u.email?.split('@')[0] || 'Okänd',
+                    phone: profile?.phone || u.user_metadata?.phone || 'Ej angivet',
+                    email: u.email,
+                    created_at: u.created_at || profile?.created_at
+                };
+            });
+
+            return combinedUsers;
+        }
+
         async function saveBooking() {
             if (!currentUser) {
                 alert('Du måste vara inloggad för att boka!');
@@ -1239,6 +1418,7 @@
 
             renderBookings();
             renderCalendar();
+            renderUsers();
         }
 
         async function deleteBooking(id) {
@@ -1252,11 +1432,56 @@
             allBookings = allBookings.filter(b => b.id !== id);
             renderBookings();
             renderCalendar();
+            renderUsers();
         }
 
         // ──────────────────────────────────────────────────────────────
         // RENDER FUNCTIONS
         // ──────────────────────────────────────────────────────────────
+
+        function renderUsers() {
+            const container = document.getElementById('userList');
+            const statsContainer = document.getElementById('userStats');
+
+            if (!allUsers.length) {
+                container.innerHTML = `<div class="empty-state"><span>👥</span><p>Inga användare registrerade än.</p></div>`;
+                document.getElementById('totalUsers').textContent = '0';
+                document.getElementById('totalBookings').textContent = allBookings.length;
+                return;
+            }
+
+            // Uppdatera statistik
+            document.getElementById('totalUsers').textContent = allUsers.length;
+            document.getElementById('totalBookings').textContent = allBookings.length;
+
+            // Sortera efter namn
+            const sortedUsers = [...allUsers].sort((a, b) => a.name.localeCompare(b.name));
+
+            container.innerHTML = sortedUsers.map(user => {
+                const isSelf = user.id === currentUserId;
+                const userBookings = allBookings.filter(b => b.user_id === user.id);
+                const bookingCount = userBookings.length;
+
+                return `
+                    <div class="user-list-item" style="background:${isSelf ? '#f4faf4' : 'white'}">
+                        <div class="user-avatar">${user.name.charAt(0).toUpperCase()}</div>
+                        <div class="user-info">
+                            <div class="name">${user.name} ${isSelf ? '⭐' : ''}</div>
+                            <div class="phone">📱 ${user.phone || 'Ej angivet'}</div>
+                            <div class="email">📧 ${user.email || ''}</div>
+                            <div style="font-size:12px;color:#6d8a6d;margin-top:2px;">
+                                📅 ${bookingCount} bokning${bookingCount !== 1 ? 'ar' : ''}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="user-badge ${isSelf ? 'self' : ''}">
+                                ${isSelf ? 'Du' : 'Gäst'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         function renderBookings() {
             const container = document.getElementById('bookingList');
@@ -1322,7 +1547,6 @@
         function renderCalendar() {
             const container = document.getElementById('calendarView');
 
-            // Uppdatera månadsetiketten
             const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
             document.getElementById('calendarMonthLabel').textContent = monthNames[calendarMonth] + ' ' + calendarYear;
 
@@ -1332,7 +1556,6 @@
                 return;
             }
 
-            // Hämta svenska helgdagar för detta år
             const holidays = getSwedishHolidays(calendarYear);
 
             const bookedDates = {};
@@ -1384,7 +1607,6 @@
 
                 let label = d;
                 if (holidayName) {
-                    // Visa 🎉 för helgdagar
                     label = d + '<span class="holiday-name">' + holidayName.replace('🎉 ', '') + '</span>';
                 } else if (bookings.length > 0) {
                     const names = bookings.map(b => b.name).join(', ');
@@ -1474,14 +1696,17 @@
         }
 
         async function loadData() {
-            const [bookings, checklist] = await Promise.all([
+            const [bookings, checklist, users] = await Promise.all([
                 fetchBookings(),
-                fetchChecklist()
+                fetchChecklist(),
+                fetchUsers()
             ]);
             allBookings = bookings;
             checklistItems = checklist;
+            allUsers = users;
             renderBookings();
             renderCalendar();
+            renderUsers();
             renderChecklist();
         }
 
@@ -1506,6 +1731,9 @@
             if (e.key === 'Enter') loginUser();
         });
         document.getElementById('signupPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') signupUser();
+        });
+        document.getElementById('signupPhone').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') signupUser();
         });
 
