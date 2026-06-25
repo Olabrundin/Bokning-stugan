@@ -537,6 +537,7 @@
             border-radius: 4px;
             background: #f8faf8;
             min-height: 50px;
+            position: relative;
         }
 
         .calendar-grid .day.booked {
@@ -555,6 +556,24 @@
 
         .calendar-grid .day.weekend {
             color: #b33c3c;
+        }
+
+        .calendar-grid .day.holiday {
+            color: #b33c3c;
+            font-weight: 700;
+        }
+
+        .calendar-grid .day .holiday-name {
+            font-size: 7px;
+            display: block;
+            color: #b33c3c;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .calendar-grid .day.booked .holiday-name,
+        .calendar-grid .day.booked-other .holiday-name {
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .calendar-nav {
@@ -586,6 +605,38 @@
             color: #1e3d1e;
             min-width: 140px;
             text-align: center;
+        }
+
+        .calendar-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+
+        .calendar-legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .calendar-legend .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .calendar-legend .dot.green {
+            background: #2d5a2d;
+        }
+        .calendar-legend .dot.yellow {
+            background: #d4a843;
+        }
+        .calendar-legend .dot.red {
+            background: #b33c3c;
         }
 
         @media (min-width: 600px) {
@@ -735,8 +786,11 @@
             <div id="page-calendar" class="page">
                 <h3 style="margin-bottom:4px;">📆 Översikt över bokningar</h3>
                 <p class="small-note" style="margin-bottom:8px;">Bläddra mellan månader för att se alla bokningar</p>
-                <div class="highlight-box">
-                    🟢 <strong>Grön</strong> = Din bokning &nbsp;|&nbsp; 🟡 <strong>Gul</strong> = Andras bokning
+
+                <div class="calendar-legend">
+                    <span><span class="dot green"></span> Din bokning</span>
+                    <span><span class="dot yellow"></span> Andras bokning</span>
+                    <span><span class="dot red"></span> 🎉 Helgdag</span>
                 </div>
 
                 <div class="calendar-nav">
@@ -824,6 +878,96 @@
         // ── CALENDAR STATE ──
         let calendarYear = new Date().getFullYear();
         let calendarMonth = new Date().getMonth();
+
+        // ── SVENSKA HELGDAGAR ──
+        function getSwedishHolidays(year) {
+            // Easter Sunday calculation (computus)
+            function getEaster(year) {
+                const a = year % 19;
+                const b = Math.floor(year / 100);
+                const c = year % 100;
+                const d = Math.floor(b / 4);
+                const e = b % 4;
+                const f = Math.floor((b + 8) / 25);
+                const g = Math.floor((b - f + 1) / 3);
+                const h = (19 * a + b - d - g + 15) % 30;
+                const i = Math.floor(c / 4);
+                const k = c % 4;
+                const l = (32 + 2 * e + 2 * i - h - k) % 7;
+                const m = Math.floor((a + 11 * h + 22 * l) / 451);
+                const month = Math.floor((h + l - 7 * m + 114) / 31);
+                const day = ((h + l - 7 * m + 114) % 31) + 1;
+                return new Date(year, month - 1, day);
+            }
+
+            const easter = getEaster(year);
+            const easterDate = new Date(easter);
+
+            // Create a date helper
+            function dateOffset(date, days) {
+                const d = new Date(date);
+                d.setDate(d.getDate() + days);
+                return d;
+            }
+
+            function getDateStr(year, month, day) {
+                return new Date(year, month - 1, day).toISOString().split('T')[0];
+            }
+
+            // Rörliga helgdagar baserade på påsk
+            const goodFriday = dateOffset(easterDate, -2);
+            const easterSunday = dateOffset(easterDate, 0);
+            const easterMonday = dateOffset(easterDate, 1);
+            const ascensionDay = dateOffset(easterDate, 39);
+            const pentecost = dateOffset(easterDate, 49);
+            const midsummerEve = getMidsummerEve(year);
+            const midsummerDay = dateOffset(midsummerEve, 1);
+            const allSaintsDay = getAllSaintsDay(year);
+
+            function getMidsummerEve(year) {
+                // Midsommar: lördagen mellan 20-26 juni
+                const june20 = new Date(year, 5, 20);
+                let dayOfWeek = june20.getDay();
+                let daysToSaturday = (6 - dayOfWeek + 7) % 7;
+                const midsummerEve = new Date(year, 5, 20 + daysToSaturday - 1);
+                return midsummerEve;
+            }
+
+            function getAllSaintsDay(year) {
+                // Alla helgons dag: första lördagen efter 31 oktober
+                const oct31 = new Date(year, 9, 31);
+                let dayOfWeek = oct31.getDay();
+                let daysToSaturday = (6 - dayOfWeek + 7) % 7;
+                return new Date(year, 9, 31 + daysToSaturday);
+            }
+
+            // Fast datum
+            const holidays = {};
+
+            function addHoliday(date, name) {
+                const key = date.toISOString().split('T')[0];
+                holidays[key] = name;
+            }
+
+            addHoliday(new Date(year, 0, 1), '🎉 Nyårsdagen');
+            addHoliday(new Date(year, 0, 6), '🎉 Trettondedag jul');
+            addHoliday(goodFriday, '🎉 Långfredagen');
+            addHoliday(easterSunday, '🎉 Påskdagen');
+            addHoliday(easterMonday, '🎉 Annandag påsk');
+            addHoliday(new Date(year, 4, 1), '🎉 Första maj');
+            addHoliday(ascensionDay, '🎉 Kristi himmelsfärdsdag');
+            addHoliday(pentecost, '🎉 Pingstdagen');
+            addHoliday(new Date(year, 5, 6), '🎉 Sveriges nationaldag');
+            addHoliday(midsummerEve, '🎉 Midsommarafton');
+            addHoliday(midsummerDay, '🎉 Midsommardagen');
+            addHoliday(allSaintsDay, '🎉 Alla helgons dag');
+            addHoliday(new Date(year, 11, 24), '🎉 Julafton');
+            addHoliday(new Date(year, 11, 25), '🎉 Juldagen');
+            addHoliday(new Date(year, 11, 26), '🎉 Annandag jul');
+            addHoliday(new Date(year, 11, 31), '🎉 Nyårsafton');
+
+            return holidays;
+        }
 
         // ──────────────────────────────────────────────────────────────
         // AUTH FUNCTIONS
@@ -1188,6 +1332,9 @@
                 return;
             }
 
+            // Hämta svenska helgdagar för detta år
+            const holidays = getSwedishHolidays(calendarYear);
+
             const bookedDates = {};
             allBookings.forEach(b => {
                 let current = new Date(b.start_date);
@@ -1224,17 +1371,22 @@
                 const isToday = dateObj.toDateString() === today.toDateString();
                 const isWeekend = dateObj.getDay() === 6 || dateObj.getDay() === 0;
                 const bookings = bookedDates[dateStr] || [];
+                const holidayName = holidays[dateStr] || null;
 
                 let classes = 'day';
                 if (isToday) classes += ' today';
                 if (isWeekend) classes += ' weekend';
+                if (holidayName) classes += ' holiday';
                 if (bookings.length > 0) {
                     const allMine = bookings.every(b => b.userId === currentUser);
                     classes += allMine ? ' booked' : ' booked-other';
                 }
 
                 let label = d;
-                if (bookings.length > 0) {
+                if (holidayName) {
+                    // Visa 🎉 för helgdagar
+                    label = d + '<span class="holiday-name">' + holidayName.replace('🎉 ', '') + '</span>';
+                } else if (bookings.length > 0) {
                     const names = bookings.map(b => b.name).join(', ');
                     label += `<br><span style="font-size:8px;">${names}</span>`;
                 }
@@ -1243,7 +1395,9 @@
             }
 
             html += `</div>`;
-            html += `<p class="small-note" style="margin-top:8px;">🟢 Grön = Din bokning &nbsp;|&nbsp; 🟡 Gul = Andras bokning</p>`;
+            html += `<p class="small-note" style="margin-top:8px;">
+                        🟢 Grön = Din bokning &nbsp;|&nbsp; 🟡 Gul = Andras bokning &nbsp;|&nbsp; 🔴 Röd = 🎉 Helgdag
+                    </p>`;
 
             container.innerHTML = html;
         }
